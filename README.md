@@ -28,6 +28,10 @@ git push --tags
 
 ## Project Initialization
 - This project uses [Vite](https://vitejs.dev/) to initialize and bundle the [Svelte](https://svelte.dev/) project
+- This webapp was initialized with
+```
+npm init vite
+```
 
 ## Running Project
 - For testing this project and viewing it in local browser (localhost)
