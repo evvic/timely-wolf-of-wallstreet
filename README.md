@@ -1,7 +1,7 @@
 # timely-wolf-of-wallstreet
 webapp to show relevant stock charts and news
 
-> Note: for testing this project is deploying to a github
+> Note: for testing this webapp this project is deploying to GitHub pages
 
 # Setup
 
