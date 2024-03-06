@@ -12,7 +12,7 @@ webapp to show relevant stock charts and news
 - For testing this project and viewing it in local browser (localhost)
 - Supports **hot reloading**
 ```
-cd charts-webapp
+cd webapp
 npm install
 npm run dev
 ```
@@ -20,7 +20,7 @@ npm run dev
 ## Building Project
 - For building the project to deploy on a webserver
 ```
-cd charts-webapp
+cd webapp
 npm install
 npm run build
 ```
