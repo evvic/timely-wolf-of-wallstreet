@@ -1,7 +1,14 @@
 # timely-wolf-of-wallstreet
-webapp to show relevant stock charts and news
 
-> Note: for testing this webapp this project is deploying to GitHub pages
+Chrome extension & webapp to display charts of interest in the stock and crypto market on a scheduled basis.
+
+![GitHub repo size](https://img.shields.io/github/repo-size/evvic/timely-wolf-of-wallstreet)
+
+| Development | Production |
+| ---- | ---- |
+| [website](https://dailychart.freewebhostmost.com/) | N/A |
+| ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/evvic/timely-wolf-of-wallstreet/.github%2Fworkflows%2Fbuild-and-deploy.yml?branch=main&link=https%3A%2F%2Fgithub.com%2Fevvic%2Ftimely-wolf-of-wallstreet%2Factions%2Fworkflows%2Fbuild-and-deploy.yml) | ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/evvic/timely-wolf-of-wallstreet/.github%2Fworkflows%2Fbuild-and-deploy-prod.yml?branch=main&link=https%3A%2F%2Fgithub.com%2Fevvic%2Ftimely-wolf-of-wallstreet%2Factions%2Fworkflows%2Fbuild-and-deploy.yml) |
+
 
 # Best Practices
 
@@ -24,7 +31,7 @@ webapp to show relevant stock charts and news
 - The tag should increment the correct decimal precision `x.x.x` depending on the size of the feature 
   - Tags are created on **main**
 - Create a tag like so:
-```
+```bash
 git tag -a 0.0.1 -m "Initialize Svelte project"
 git push --tags
 ```
@@ -35,7 +42,7 @@ git push --tags
 ## Running Project
 - For testing this project and viewing it in local browser (localhost)
 - Supports **hot reloading**
-```
+```bash
 cd webapp
 npm install
 npm run dev
@@ -43,7 +50,7 @@ npm run dev
 
 ## Building Project
 - For building the project to deploy on a webserver
-```
+```bash
 cd webapp
 npm install
 npm run build
@@ -54,14 +61,14 @@ npm run build
 
 ### Clone Repo To Local
 - Simply run the following 
-```
+```bash
 git clone git@github.com:evvic/timely-wolf-of-wallstreet.git
 ```
 
 ### Install Node
 - **This project requires node version** `v18.0.0` **or higher**
 - Run the following commands to update node:
-```
+```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 source ~/.bashrc
 nvm --version
@@ -80,7 +87,7 @@ node --version
 > **This step does not need to be done**, but shows how to initialize a new Vite + Svelte project
 - This project uses [Vite](https://vitejs.dev/) to initialize and bundle the [Svelte](https://svelte.dev/) project
 - This webapp was initialized with
-```
+```bash
 npm init vite
 ```
 
