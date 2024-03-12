@@ -25,13 +25,20 @@ jobs:
       - name: List directory contents
         run: ls webapp
 
-      - name: Install SSH keys
-        run: |
-          mkdir -p ~/.ssh
-          touch ~/.ssh/id_ed25519
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H "${{ secrets.SSH_HOST }}" > ~/.ssh/known_hosts
+      - name: Create SSH dir
+        run: mkdir -p ~/.ssh
+
+      - name: Create private key file
+        run: touch ~/.ssh/id_ed25519
+
+      - name: Add private key contents to file
+        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+
+      - name: Give correct permissions to private key file
+        run: chmod 600 ~/.ssh/id_ed25519
+      
+      - name: Add host to known hosts file
+        run: ssh-keyscan -H "${{ secrets.SSH_HOST }}" > ~/.ssh/known_hosts
         
       #- name: Deploy 🚀
       - name: Copy Build to Webserver
