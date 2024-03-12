@@ -24,8 +24,13 @@ jobs:
           
       - name: List directory contents
         run: ls webapp
+
+      - name: Install SSH keys
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_ed25519
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          ssh-keyscan -H "${{ secrets.SSH_HOST }}" > ~/.ssh/known_hosts
         
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: webapp/dist # The folder the action should deploy.
+      #- name: Deploy 🚀
+      - name: Copy Build to Webserver
+        run: scp -i ~/.ssh/id_ed25519 -P 2323 -r webapp/dist/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_WORK_DIR }}
