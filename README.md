@@ -17,6 +17,7 @@ webapp to show relevant stock charts and news
 > Note: **NEVER COMMIT DIRECTLY TO MAIN BRANCH**
 - To merge the feature branch to main a PR must be submitted
 - The PR must pass a code review to be approved
+- After the PR is approved, choose "**Squash and merge**" over "Rebase and merge"
 
 ## Tags
 - Notable features should add a tag
