@@ -37,9 +37,9 @@ jobs:
       - name: Give correct permissions to private key file
         run: chmod 600 ~/.ssh/id_ed25519
       
-      - name: Add host to known hosts file
-        run: ssh-keyscan -H "${{ secrets.SSH_HOST }}" > ~/.ssh/known_hosts
+      # - name: Add host to known hosts file
+      #   run: ssh-keyscan -H "${{ secrets.SSH_HOST }}" > ~/.ssh/known_hosts
         
       #- name: Deploy 🚀
       - name: Copy Build to Webserver
-        run: scp -i ~/.ssh/id_ed25519 -P 2323 -r webapp/dist/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_WORK_DIR }}
+        run: scp -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 -P 2323 -r webapp/dist/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_WORK_DIR }}
