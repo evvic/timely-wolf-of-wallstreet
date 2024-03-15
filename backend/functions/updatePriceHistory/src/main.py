@@ -23,8 +23,12 @@ def main(context):
     
     # databases = Databases(client)
     
+    context.log(FINNHUB_API_KEY)
+    
     ### Main goal for now is to print stock price data to screen
     resp = getStockPriceToday(symbol='AAPL', finnhub_key=FINNHUB_API_KEY)
+    
+    context.log(resp)
     
     if resp[0] == False:
         # If something goes wrong, log an error
