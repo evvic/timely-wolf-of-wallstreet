@@ -19,7 +19,7 @@ COLLECTION_ID_PROFILE = os.environ['COLLECTION_ID_PROFILE']
 def main(context):
     
     # Get the symbol of interest
-    query_params = json.dumps(context.req.query)
+    query_params = context.req.query
     
     context.log(query_params) ##
     
