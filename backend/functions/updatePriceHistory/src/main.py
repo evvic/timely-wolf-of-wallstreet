@@ -15,8 +15,6 @@ PROJECT_ID = os.environ['PROJECT_ID']
 DATABASE_ID = os.environ['DATABASE_ID']
 COLLECTION_ID_PROFILE = os.environ['COLLECTION_ID_PROFILE']
 
-
-
 # This is your Appwrite function
 # It's executed each time we get a request
 def main(context):

@@ -31,7 +31,7 @@ def formatStockDocument(symbol: str, price_data: dict, date = None) -> dict:
         "price": price_data["c"],
         "low": price_data["l"],
         "high": price_data["h"],
-        "date": date
+        "date": date.isoformat()
     }
     
     return stock_doc
