@@ -1,4 +1,5 @@
 import os
+import json
 import requests
 from appwrite.client import Client
 from appwrite.services.databases import Databases
@@ -16,6 +17,17 @@ COLLECTION_ID_PROFILE = os.environ['COLLECTION_ID_PROFILE']
 # This is your Appwrite function
 # It's executed each time we get a request
 def main(context):
+    
+    # Get the symbol of interest
+    query_params = json.dumps(context.req.query)
+    
+    context.log(query_params) ##
+    
+    symbol = "AAPL" ## temp init
+    if "symbol" in query_params.keys():
+        symbol = query_params["symbol"]
+    
+    context.log("\n\nsymbol == {}\n\n".format(symbol))
     
     client = (
         Client()
