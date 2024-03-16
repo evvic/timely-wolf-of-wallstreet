@@ -56,9 +56,13 @@ def main(context):
     
     document_data = formatStockDocument(symbol=symbol, price_data=price_data)
     
+    context.log("~~ pre dump ~~") ##
+    context.log(json.dumps(document_data)) ##
+    context.log("~~ post dump ~~") ##
+    
     # The `ctx.req` object contains the request data
     if context.req.method == "GET":
-        return context.res.json(price_data)
+        return context.res.json(document_data)
     # POST stock price data to database (create a document)
     elif context.req.method == "POST":
                 
