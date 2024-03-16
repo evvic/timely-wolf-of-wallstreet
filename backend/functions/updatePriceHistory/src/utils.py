@@ -1,3 +1,4 @@
+from datetime import datetime
 import finnhub
 
 # Uses FinnHub API to retrieve stock price data
@@ -18,3 +19,20 @@ def getStockPriceToday(symbol: str, finnhub_key: str):
             return (False, errmsg)
         
     return (True, quote)
+
+
+# Format to correct document type
+def formatStockDocument(symbol: str, price_data: dict, date = None) -> dict:
+    
+    date = date if date else datetime.now()
+    
+    stock_doc = {
+        "symbol": symbol,
+        "price": price_data["c"],
+        "low": price_data["l"],
+        "high": price_data["h"],
+        "date": date
+    }
+    
+    return stock_doc
+
