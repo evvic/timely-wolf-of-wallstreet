@@ -24,22 +24,19 @@ def main(context):
     
     context.log(json.dumps(query_params)) ##
     context.log(context.req.query_string) ##
+    context.log(json.dumps(context.req.body)) ##
+    context.log(context.req.body_raw) ##
     
-    symbol = "AAPL" ## temp init
+    symbol = None
     if "symbol" in query_params.keys():
         symbol = query_params["symbol"]
     else:
-        context.error("Error: no symbol provided! Must include i.e. ?symbol=AAPl")
-        return context.res.send("Error: no symbol provided! Must include i.e. ?symbol=AAPl")
+        context.error("Error: no symbol provided! Must include i.e. ?symbol=AAPL")
+        return context.res.send("Error: no symbol provided! Must include i.e. ?symbol=AAPL")
         
     log = "\nsymbol == {}\n".format(symbol)
     
     context.log(log)
-    
-    #data = databases.list_documents(database_id=DATABASE_ID, collection_id=COLLECTION_ID_PROFILE)
-    
-    #context.log(data)
-    #context.log(FINNHUB_API_KEY)
     
     resp = getStockPriceToday(symbol=symbol, finnhub_key=FINNHUB_API_KEY)
     
@@ -82,10 +79,7 @@ def main(context):
             data=document_data
         )
         
-        return context.res.send(resp)
-        
-        
-        
+        return context.res.json(resp)
 
     # `ctx.res.json()` is a handy helper for sending JSON
     return context.res.json(

@@ -14,7 +14,7 @@ def getStockPriceToday(symbol: str, finnhub_key: str):
         errmsg = "Error getting quote: {}".format(e)
         return (False, errmsg)
     else:
-        if not quote:
+        if not quote or "c" not in quote.keys():
             errmsg = "Error getting quote for {}".format(symbol)
             return (False, errmsg)
         
@@ -31,7 +31,7 @@ def formatStockDocument(symbol: str, price_data: dict, date = None) -> dict:
         "price": price_data["c"],
         "low": price_data["l"],
         "high": price_data["h"],
-        "date": date.isoformat()
+        "date": date.isoformat() # datetime must be JSON serializable
     }
     
     return stock_doc
