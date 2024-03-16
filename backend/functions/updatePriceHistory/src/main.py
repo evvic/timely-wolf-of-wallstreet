@@ -8,24 +8,29 @@ from .utils import getStockPriceToday
 
 # Environment variables
 FINNHUB_API_KEY = os.environ['FINNHUB_API_KEY']
+PROJECT_ID = os.environ['PROJECT_ID']
+DATABASE_ID = os.environ['DATABASE_ID']
+COLLECTION_ID_PROFILE = os.environ['COLLECTION_ID_PROFILE']
 
 
 # This is your Appwrite function
 # It's executed each time we get a request
 def main(context):
     
-    # client = (
-    #     Client()
-    #         .set_endpoint("https://cloud.appwrite.io/v1")
-    #         .set_project(os.environ["APPWRITE_FUNCTION_PROJECT_ID"])
-    #         .set_key(os.environ["APPWRITE_API_KEY"])
-    # )
+    client = (
+        Client()
+            .set_endpoint("https://cloud.appwrite.io/v1")
+            .set_project(os.environ["PROJECT_ID"])
+            #.set_key(os.environ["APPWRITE_API_KEY"])
+    )
     
-    # databases = Databases(client)
+    databases = Databases(client)
     
+    data = databases.list_documents(database_id=DATABASE_ID, collection_id=COLLECTION_ID_PROFILE)
+    
+    context.log(data)
     context.log(FINNHUB_API_KEY)
     
-    ### Main goal for now is to print stock price data to screen
     resp = getStockPriceToday(symbol='AAPL', finnhub_key=FINNHUB_API_KEY)
     
     context.log(resp)
@@ -36,6 +41,8 @@ def main(context):
 
     # You can log messages to the console
     context.log("Hello, Logs!")
+    
+    ### TODO: save data for symbol to the database in an organized way to create a chart
 
     
     # The `ctx.req` object contains the request data
