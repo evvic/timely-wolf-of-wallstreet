@@ -52,8 +52,9 @@ def main(context):
     symbols = collect_symbols(query_req=context.req.query, body_req=context.req.body)
     
     if len(symbols) <= 0:
-        context.error("Error: no symbol provided! Must include i.e. ?symbol=AAPL")
-        return context.res.send("Error: no symbol provided! Must include i.e. ?symbol=AAPL")
+        errmsg = "Error: no symbol provided!\nCollected symbols: {}\nMust include i.e. ?symbol=AAPL".format(symbols)
+        context.error(errmsg)
+        return context.res.send(errmsg)
     
     context.log(symbols) ##
     
