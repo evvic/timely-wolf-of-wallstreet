@@ -21,7 +21,8 @@ def main(context):
     # Get the symbol of interest
     query_params = context.req.query
     
-    context.log(query_params) ##
+    context.log(json.dumps(query_params)) ##
+    context.log(context.req.query_string) ##
     
     symbol = "AAPL" ## temp init
     if "symbol" in query_params.keys():
