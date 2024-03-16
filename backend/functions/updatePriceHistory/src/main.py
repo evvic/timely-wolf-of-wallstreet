@@ -48,8 +48,15 @@ def main(context):
     context.log(json.dumps(context.req.body)) ##
     context.log(context.req.body_raw) ##
     
+    # Verify body is an actual dict
+    body_obj = context.req.body_raw
+    if context.req.body_raw == "" or context.req.body == "":
+        body_obj = {}
+    if not isinstance(context.req.body_raw, dict):
+        body_obj = json.loads(context.req.body_raw)
+    
     # Collect symbols
-    symbols = collect_symbols(query_req=context.req.query, body_req=context.req.body)
+    symbols = collect_symbols(query_req=context.req.query, body_req=body_obj)
     
     if len(symbols) <= 0:
         errmsg = "Error: no symbol provided!\nCollected symbols: {}\nMust include i.e. ?symbol=AAPL".format(symbols)
