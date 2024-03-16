@@ -26,8 +26,10 @@ def main(context):
     symbol = "AAPL" ## temp init
     if "symbol" in query_params.keys():
         symbol = query_params["symbol"]
+        
+    log = "\nsymbol == {}\n".format(symbol)
     
-    context.log("\n\nsymbol == {}\n\n".format(symbol))
+    context.log(log)
     
     client = (
         Client()
