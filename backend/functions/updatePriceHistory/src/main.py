@@ -26,7 +26,7 @@ def collect_symbols(query_req, body_req):
         symbols.append(query_req["symbol"].upper())
     if "symbol" in body_req.keys():
         for symbol in strtolist(body_req["symbol"]):
-            symbols.append(body_req["symbol"].upper())
+            symbols.append(symbol.upper())
     if "symbols" in body_req.keys():
         for symbol in strtolist(body_req["symbols"]):
             symbols.append(symbol.upper())
