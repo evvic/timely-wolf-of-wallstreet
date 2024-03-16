@@ -1,6 +1,13 @@
 from datetime import datetime
 import finnhub
 
+# String to list
+def strtolist(var):
+    if isinstance(var, str):
+        return [var]
+    else:
+        return var
+
 # Uses FinnHub API to retrieve stock price data
 # Error should return error string with it
 # Return - Tuple (Boolean of pass/fail, quote dict/error message)
