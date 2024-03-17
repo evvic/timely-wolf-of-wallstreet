@@ -179,8 +179,6 @@ def main(context):
         responses = []
         for index, doc in enumerate(documents):
             
-            context.log("Adding data {} to database".format(index))
-            
             resp = databases.create_document(
                 database_id=DATABASE_ID, 
                 collection_id=COLLECTION_ID_PROFILE,
@@ -189,6 +187,8 @@ def main(context):
             )
             
             responses.append(resp)
+            
+        context.log("Added {} documents to {} collection".format(len(responses), COLLECTION_ID_PROFILE))
         
         documents = responses
     
