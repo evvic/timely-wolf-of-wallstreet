@@ -186,11 +186,11 @@ def main(context):
                 data=doc
             )
             
-            responses.append(resp)
+            #responses.append(resp)
             
-        context.log("Added {} documents to {} collection".format(len(responses), COLLECTION_ID_PROFILE))
+        #context.log("Added {} documents to {} collection".format(len(responses), COLLECTION_ID_PROFILE))
         
-        documents = responses
+        #documents = responses
     
     return context.res.json(documents)
 
