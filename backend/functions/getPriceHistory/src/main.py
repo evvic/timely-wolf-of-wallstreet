@@ -91,7 +91,9 @@ def getPriceHistoryAlphaVantage(symbol, outputsize="compact", market_type="stock
     return transformed_data
 
 # Checks input from 
-def alphaVantageQuery(market_type, query):
+def alphaVantageQuery(market_type, context):
+    
+    query = context.req.query ## temp?
 
     # Check symbol is provided
     if "symbol" not in query.keys():
@@ -100,22 +102,29 @@ def alphaVantageQuery(market_type, query):
     
     symbol = query["symbol"]
     
+    context.log(symbol)
+    
     # Get non-required params
     outputsize = query.get("outputsize", "compact")
     market     = query.get("market", "USD")
     timeseries = query.get("timeseries", "DAILY")
     
+    context.log("{} {} {}".format(outputsize, market, timeseries))
+    
     # Determine series of daily, weekly, or monthly
     if timeseries not in ["DAILY", "WEEKLY", "MONTHLY"]:
         errmsg = "Error: timeseries param not containg valid timeseries value"
         return errmsg
-        
-    documents = getPriceHistoryAlphaVantage(
-        symbol, 
-        outputsize=outputsize, 
-        market_type=market_type, 
-        timeseries=timeseries,
-        market=market)
+    
+    try:
+        documents = getPriceHistoryAlphaVantage(
+            symbol, 
+            outputsize=outputsize, 
+            market_type=market_type, 
+            timeseries=timeseries,
+            market=market)
+    except Exception as e:
+        context.log(e)
     
     return documents
     
@@ -140,7 +149,7 @@ def main(context):
     
     context.log("market_type = {}".format(market_type))
     
-    documents = alphaVantageQuery(market_type, context.req.query)
+    documents = alphaVantageQuery(market_type, context)
         
     # Error occured getting documents of API data
     if isinstance(documents, str):
