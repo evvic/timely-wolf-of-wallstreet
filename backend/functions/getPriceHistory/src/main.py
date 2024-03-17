@@ -9,9 +9,10 @@ from appwrite.id import ID
 
 # Environment variables
 ALPHAVANTAGE_API_KEY = os.environ['ALPHAVANTAGE_API_KEY']
-# PROJECT_ID = os.environ['PROJECT_ID']
-# DATABASE_ID = os.environ['DATABASE_ID']
-# COLLECTION_ID_PROFILE = os.environ['COLLECTION_ID_PROFILE']
+PROJECT_ID = os.environ['PROJECT_ID']
+DATABASE_ID = os.environ['DATABASE_ID']
+COLLECTION_ID_CRYPTO = os.environ['COLLECTION_ID_CRYPTO']
+COLLECTION_ID_STOCK = os.environ['COLLECTION_ID_STOCK']
 
 ### constants
 CRYPTO_FUNC_BASE = "DIGITAL_CURRENCY_"
@@ -157,6 +158,36 @@ def main(context):
         return context.res.send(documents)
     
     # Check method to either return documents or add to database
+    # The `ctx.req` object contains the request data
+    # POST stock price data to database (create documents)
+    if context.req.method == "POST":
+        context.log("Adding data to database")
+        
+        # Set collection ID to correct collection (either stock or crypto)
+        COLLECTION_ID_PROFILE = COLLECTION_ID_CRYPTO if market_type == "crypto" else COLLECTION_ID_STOCK
+        
+        # Init client for posting
+        client = (
+            Client()
+                .set_endpoint("https://cloud.appwrite.io/v1")
+                .set_project(os.environ["PROJECT_ID"])
+                #.set_key(os.environ["APPWRITE_API_KEY"])
+        )
+
+        databases = Databases(client)
+        
+        responses = []
+        for doc in documents:
+                
+            resp = databases.create_document(
+                database_id=DATABASE_ID, 
+                collection_id=COLLECTION_ID_PROFILE,
+                document_id=ID.unique(),
+                data=doc
+            )
+            
+            responses.append(resp)
+            documents = responses
     
     return context.res.json(documents)
 
