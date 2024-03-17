@@ -100,19 +100,15 @@ def alphaVantageQuery(market_type, query):
     
     symbol = query["symbol"]
     
-    # Default time series is daily but overwrite if it was provided
-    timeseries = "DAILY"
-    # Determine series of daily, weekly, or monthly
-    if "timeseries" in query.keys():
-        timeseries = query["timeseries"].upper()
+    # Get non-required params
+    outputsize = query.get("outputsize", "compact")
+    market     = query.get("market", "USD")
+    timeseries = query.get("timeseries", "DAILY")
     
+    # Determine series of daily, weekly, or monthly
     if timeseries not in ["DAILY", "WEEKLY", "MONTHLY"]:
         errmsg = "Error: timeseries param not containg valid timeseries value"
         return errmsg
-    
-    # Get non-required params
-    outputsize = query.get("outputsize", "compact")
-    market = query.get("market", "USD")
         
     documents = getPriceHistoryAlphaVantage(
         symbol, 
@@ -141,6 +137,8 @@ def main(context):
         errmsg = "Error: URL path `{}` does not include 'stock' or 'crypto' sub path".format(context.req.path)
         context.error(errmsg)
         return context.res.send(errmsg)
+    
+    context.log("market_type = ".format(market_type))
     
     documents = alphaVantageQuery(market_type, context.req.query)
         
