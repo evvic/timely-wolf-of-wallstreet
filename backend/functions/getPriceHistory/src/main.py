@@ -177,8 +177,10 @@ def main(context):
         databases = Databases(client)
         
         responses = []
-        for doc in documents:
-                
+        for index, doc in enumerate(documents):
+            
+            context.log("Adding data {} to database".format(index))
+            
             resp = databases.create_document(
                 database_id=DATABASE_ID, 
                 collection_id=COLLECTION_ID_PROFILE,
@@ -187,7 +189,8 @@ def main(context):
             )
             
             responses.append(resp)
-            documents = responses
+        
+        documents = responses
     
     return context.res.json(documents)
 
