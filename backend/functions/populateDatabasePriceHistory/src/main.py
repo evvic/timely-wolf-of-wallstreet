@@ -157,6 +157,12 @@ def main(context):
         context.error(documents)
         return context.res.send(documents)
     
+    if context.req.method != "POST":
+        # Do this to save bandwidth! Do not return all queried data or add to db cause that takes bandwidth
+        errmsg = "Method must be POST to populate database with the {} queried objects".format(len(documents))
+        context.log(errmsg)
+        return context.res.send(errmsg)
+        
     # Check method to either return documents or add to database
     # The `ctx.req` object contains the request data
     # POST stock price data to database (create documents)
