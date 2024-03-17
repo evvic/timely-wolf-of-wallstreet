@@ -138,7 +138,7 @@ def main(context):
         context.error(errmsg)
         return context.res.send(errmsg)
     
-    context.log("market_type = ".format(market_type))
+    context.log("market_type = {}".format(market_type))
     
     documents = alphaVantageQuery(market_type, context.req.query)
         
