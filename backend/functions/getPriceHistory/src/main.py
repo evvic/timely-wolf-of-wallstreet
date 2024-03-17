@@ -124,6 +124,14 @@ def alphaVantageQuery(market_type, query):
     return documents
     
 def main(context):
+    
+    # Get the symbol of interest
+    query_params = context.req.query
+    
+    context.log(json.dumps(query_params)) ##
+    context.log(context.req.query_string) ##
+    context.log(json.dumps(context.req.body)) ##
+    context.log(context.req.body_raw) ##
 
     if "crypto" in context.req.path.lower():
         market_type = "crypto"
