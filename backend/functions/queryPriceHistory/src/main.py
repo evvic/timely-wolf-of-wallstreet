@@ -1,5 +1,5 @@
 import os
-from datetime import date, timedelta, datetime
+import json
 
 # NOTE: appwrite==4.1.0 is required currently due to broken Queries in 5.0.1!!!
 # Query syntax in 5.0.1 is modified for the new server changes but those changes
@@ -12,40 +12,53 @@ from appwrite.query import Query
 
 from .utils import get_date_list
 
+# Environment variables
+APPWRITE_API_KEY = os.environ['APPWRITE_API_KEY']
+PROJECT_ID = os.environ['PROJECT_ID']
+DATABASE_ID = os.environ['DATABASE_ID']
+COLLECTION_ID_CRYPTO = os.environ['COLLECTION_ID_CRYPTO']
+COLLECTION_ID_STOCK = os.environ['COLLECTION_ID_STOCK']
 
 # This is your Appwrite function
 # It's executed each time we get a request
 def main(context):
-    # Why not try the Appwrite SDK?
-    #
-    # client = (
-    #     Client()
-    #     .set_endpoint("https://cloud.appwrite.io/v1")
-    #     .set_project(os.environ["APPWRITE_FUNCTION_PROJECT_ID"])
-    #     .set_key(os.environ["APPWRITE_API_KEY"])
-    # )
+    # Get the symbol of interest
+    query_params = context.req.query
+    
+    context.log(json.dumps(query_params)) ##
+    context.log(context.req.query_string) ##
+    context.log(json.dumps(context.req.body)) ##
+    context.log(context.req.body_raw) ##
 
-    # You can log messages to the console
-    context.log("Hello, Logs!")
-
-    # If something goes wrong, log an error
-    context.error("Hello, Errors!")
-
-    # The `ctx.req` object contains the request data
-    if context.req.method == "GET":
-        # Send a response with the res object helpers
-        # `ctx.res.send()` dispatches a string back to the client
-        return context.res.send("Hello, World!")
-
-    # `ctx.res.json()` is a handy helper for sending JSON
-    return context.res.json(
-        {
-            "motto": "Build like a team of hundreds_",
-            "learn": "https://appwrite.io/docs",
-            "connect": "https://appwrite.io/discord",
-            "getInspired": "https://builtwith.appwrite.io",
-        }
-    )
+    if "crypto" in context.req.path.lower():
+        market_type = "crypto"
+    elif "stock" in context.req.path.lower():
+        market_type = "stock"
+    else:
+        errmsg = "URL path `{}` does not include 'stock' or 'crypto' sub path".format(context.req.path)
+        context.error(errmsg)
+        return context.res.json({"error": errmsg})
+    
+    context.log("market_type = {}".format(market_type))
+    
+    # Check symbol is provided
+    if "symbol" not in context.req.query.keys():
+        errmsg = "Query param 'symbol' is required"
+        context.error(errmsg)
+        return context.res.json({"error": errmsg})
+    
+    symbol = context.req.query["symbol"]
+    
+    context.log(symbol)
+    
+    # Get non-required params
+    length     = context.req.query.get("length", 52)
+    offset     = context.req.query.get("offset", 0)
+    timeseries = context.req.query.get("timeseries", "DAILY")
+    
+    docs = practiceQuery(market_type=market_type, symbol=symbol, timeseries=timeseries, window_offset=offset, window_size=length)
+    
+    return context.res.json(docs)
    
     
 def queryTimeSeries(market_type, symbol, timeseries="WEEKLY", window_offset=0, window_size=52):
@@ -74,8 +87,7 @@ def queryTimeSeries(market_type, symbol, timeseries="WEEKLY", window_offset=0, w
     elif timeseries.upper() == "MONTHLY":
         step = 30
     else:
-        print("Error not a good timeseries")
-        return
+        return {"error": "Not a valid timeseries: {}".format(timeseries)}
     
     # Adjust window size based on step
     window_size *= step
@@ -94,7 +106,6 @@ def queryTimeSeries(market_type, symbol, timeseries="WEEKLY", window_offset=0, w
                 Query.offset(i),  # Specify offset
             ]
         )
-        print(doc)
 
         # Check if any documents were retrieved
         if not doc:
@@ -115,14 +126,12 @@ def practiceQuery(market_type, symbol, timeseries="WEEKLY", window_offset=0, win
     elif timeseries.upper() == "MONTHLY":
         step = 30
     else:
-        print("Error not a good timeseries")
-        return
-    
+        return {"error": "Not a valid timeseries: {}".format(timeseries)}
+        
     # Set collection ID to correct collection (either stock or crypto)
     COLLECTION_ID_PROFILE = COLLECTION_ID_CRYPTO if market_type == "crypto" else COLLECTION_ID_STOCK
     
     dates = get_date_list(window_offset, step, window_size)
-    print(dates)
     
     client = (
         Client()
@@ -142,30 +151,12 @@ def practiceQuery(market_type, symbol, timeseries="WEEKLY", window_offset=0, win
         queries=[
             Query.order_asc('date'),
             Query.equal('symbol', symbol),
-            #Query.greater_than('price', 870),
-            #Query.limit(window_size),
             Query.equal('date', dates)
         ] 
         )
     
     if docs['total'] <= 0:
-        print("No docs matched query")
-        return
-    
-    for doc in docs['documents']:
-        print(doc)
+        return {"error": "No docs matched query"}
         
     return docs
     
-
-
-docs = practiceQuery(market_type='stocks', symbol="TSLA", timeseries="MONTHLY", window_offset=0, window_size=5)
-
-import pdb
-pdb.set_trace()
-
-print(docs)
-
-
-dates = get_date_list(0, 7, 5)
-print(dates)
