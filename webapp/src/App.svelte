@@ -1,6 +1,6 @@
 <script lang="ts">
   // import "../app.css";
-
+  import type { ChartProps } from "../src/components/chart.svelte"
   const key: string = import.meta.env.VITE_PUBLIC_STOCK_API_KEY;
 
   interface stock {
@@ -61,23 +61,8 @@
     </button>
   </div>
 
-  <div class="flex flex-col items-center">
-    {#if topList}
-      {#each topList as item}
-        <div
-          class="flex border-zinc-500 bg-zinc-400 font-bold border-2 min-w-64 rounded-xl p-1 mb-2 flex-row justify-between"
-        >
-          <div class="">
-            <p>{item.name}</p>
-          </div>
-
-          <div>
-            <p>Price: {item.price}</p>
-            <p>Change: {item.pChange}%</p>
-          </div>
-        </div>
-      {/each}
-    {/if}
+  <div class="flex flex-col items-center"> 
+    <p>dasd</p>    
   </div>
 </main>
 
