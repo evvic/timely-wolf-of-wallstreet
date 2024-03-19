@@ -52,8 +52,8 @@ def main(context):
     context.log(symbol)
     
     # Get non-required params
-    length     = context.req.query.get("length", 52)
-    offset     = context.req.query.get("offset", 0)
+    length     = int(context.req.query.get("length", 52))
+    offset     = int(context.req.query.get("offset", 0))
     timeseries = context.req.query.get("timeseries", "DAILY")
     
     docs = practiceQuery(market_type=market_type, symbol=symbol, timeseries=timeseries, window_offset=offset, window_size=length)
