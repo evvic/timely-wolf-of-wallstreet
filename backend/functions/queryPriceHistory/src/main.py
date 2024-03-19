@@ -10,6 +10,14 @@ from appwrite.services.databases import Databases
 from appwrite.id import ID
 from appwrite.query import Query
 
+from .utils import get_date_list
+
+PROJECT_ID = 'market-hunters-dev'
+DATABASE_ID = 'pricecharts'
+COLLECTION_ID_CRYPTO = 'crypto'
+COLLECTION_ID_STOCK = 'stocks'
+APPWRITE_API_KEY = "556869225850c7a5383ca0d7e333b08f7a01eb5e718ee31805831a54b0876c0747e736c8ca5fe0d1c8d390280a82639ef86fbac93b7512be58225ed5946dddc1f604c2b7af31efdb194424010137cf3b64a35df6628b71883466f074233bcafeef12bd8d08e5859fa95fbec00579bad6d32bb72a2ed7f3deb12e0afda75fd0c8"
+
 # This is your Appwrite function
 # It's executed each time we get a request
 def main(context):
@@ -43,43 +51,7 @@ def main(context):
             "getInspired": "https://builtwith.appwrite.io",
         }
     )
-    
-def get_date_list(offset_days, step_days, window_size):
-  """
-  Generates a list of datetime objects for a window based on offset and step.
-
-  Args:
-      offset_days (int): Number of days offset from today (0 for today).
-      step_days (int): Step size between dates (e.g., 6 for every Monday).
-      window_size (int): Number of dates to include in the window.
-
-  Returns:
-      list: List of datetime objects for the specified window.
-  """
-
-  # Get today's date
-  today = date.today()
-
-  # Calculate start date based on offset
-  start_date = today - timedelta(days=offset_days)
-
-  # List to store datetime objects
-  date_list = []
-
-  # Iterate for the window size
-  for _ in range(window_size):
-
-    # Skip weekends by shifting to the closest weekday
-    while start_date.weekday() == 5:  # 5 and 6 represent Saturday and Sunday
-        start_date -= timedelta(days=1)
-    
-    # Combine date with zero time
-    date_list.append(start_date.strftime("%Y-%m-%d"))
-
-    # Update start date for the next iteration
-    start_date -= timedelta(days=step_days)
-
-  return date_list
+   
     
 def queryTimeSeries(market_type, symbol, timeseries="WEEKLY", window_offset=0, window_size=52):
     # Set a hard limit of 104 values from query
