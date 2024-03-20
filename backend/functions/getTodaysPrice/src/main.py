@@ -50,9 +50,11 @@ def main(context):
     
     # Verify body is an actual dict
     body_obj = context.req.body_raw
-    if context.req.body_raw == "" or context.req.body == "":
+    if context.req.body_raw == "" or context.req.body == "" or context.req.body_raw == None or context.req.body == None:
         body_obj = {}
-    if not isinstance(context.req.body_raw, dict):
+        context.log("creating empty braces for body_obj")
+    elif not isinstance(context.req.body_raw, dict):
+        context.log("context.req.body_raw is not an instance of a dict, calling json.loads")
         body_obj = json.loads(context.req.body_raw)
     
     # Collect symbols
