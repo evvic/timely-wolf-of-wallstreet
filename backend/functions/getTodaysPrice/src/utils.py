@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import finnhub
 
 # String to list
@@ -33,8 +33,14 @@ def formatStockDocument(symbol: str, price_data: dict, date = None) -> dict:
     
     date = date if date else datetime.now()
     
+    # Assuming standard time (not DST) - adjust for DST if needed
+    offset = timedelta(hours=4)
+
+    # Subtract 4 hours from the current datetime (estimate NYSE time from UTC)
+    now_nyse_approx = date - offset
+        
     # Create a new datetime object with year, month, and day only (time set to 00:00:00)
-    date = datetime(date.year, date.month, date.day)
+    date = datetime(now_nyse_approx.year, now_nyse_approx.month, now_nyse_approx.day)
     
     stock_doc = {
         "symbol": symbol,
