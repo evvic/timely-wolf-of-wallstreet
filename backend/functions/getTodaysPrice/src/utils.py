@@ -25,7 +25,7 @@ def getStockPriceToday(symbol: str, finnhub_key: str):
             errmsg = "Error getting quote for {}".format(symbol)
             return {"error": errmsg}
         
-    return (True, quote)
+    return quote
 
 
 # Format to correct document type
