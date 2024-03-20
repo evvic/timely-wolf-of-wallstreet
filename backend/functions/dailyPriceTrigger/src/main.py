@@ -4,10 +4,7 @@ from appwrite.client import Client
 from appwrite.services.functions import Functions
 
 # Environment variables
-FINNHUB_API_KEY = os.environ['FINNHUB_API_KEY']
 PROJECT_ID = os.environ['PROJECT_ID']
-DATABASE_ID = os.environ['DATABASE_ID']
-COLLECTION_ID_PROFILE = os.environ['COLLECTION_ID_PROFILE']
 APPWRITE_API_KEY = os.environ['APPWRITE_API_KEY']
 FUNCTION_getTodaysPrice_ID = os.environ['FUNCTION_getTodaysPrice_ID']
 
