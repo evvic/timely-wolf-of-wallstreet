@@ -8,15 +8,18 @@ PROJECT_ID = os.environ['PROJECT_ID']
 APPWRITE_API_KEY = os.environ['APPWRITE_API_KEY']
 FUNCTION_getTodaysPrice_ID = os.environ['FUNCTION_getTodaysPrice_ID']
 
-client = (
-    Client()    
-    .set_endpoint('https://cloud.appwrite.io/v1')
-    .set_project(PROJECT_ID)
-    .set_key(APPWRITE_API_KEY)
-)
+def main(context):
+    client = (
+        Client()    
+        .set_endpoint('https://cloud.appwrite.io/v1')
+        .set_project(PROJECT_ID)
+        .set_key(APPWRITE_API_KEY)
+    )
 
-functions = Functions(client)
+    functions = Functions(client)
 
-result = functions.create_execution(FUNCTION_getTodaysPrice_ID, path="/stock?symbol=QQQ", method='POST')
+    result = functions.create_execution(FUNCTION_getTodaysPrice_ID, path="/stock?symbol=QQQ", method='POST')
 
-print(result)
+    context.log(result)
+    
+    return context.res.send(result)
