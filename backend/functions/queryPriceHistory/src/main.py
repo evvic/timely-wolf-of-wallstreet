@@ -151,7 +151,8 @@ def practiceQuery(market_type, symbol, timeseries="WEEKLY", window_offset=0, win
         queries=[
             Query.order_asc('date'),
             Query.equal('symbol', symbol),
-            Query.equal('date', dates)
+            Query.equal('date', dates),
+            Query.select(['date', 'symbol', 'price', 'low', 'high'])
         ] 
         )
     
