@@ -1,37 +1,25 @@
 from appwrite.client import Client
 import os
 
+from appwrite.services.functions import Functions
+# Environment variables
+FINNHUB_API_KEY = os.environ['FINNHUB_API_KEY']
+PROJECT_ID = os.environ['PROJECT_ID']
+DATABASE_ID = os.environ['DATABASE_ID']
+COLLECTION_ID_PROFILE = os.environ['COLLECTION_ID_PROFILE']
+APPWRITE_API_KEY = os.environ['APPWRITE_API_KEY']
+FUNCTION_getTodaysPrice_ID = os.environ['FUNCTION_getTodaysPrice_ID']
 
-# This is your Appwrite function
-# It's executed each time we get a request
-def main(context):
-    # Why not try the Appwrite SDK?
-    #
-    # client = (
-    #     Client()
-    #     .set_endpoint("https://cloud.appwrite.io/v1")
-    #     .set_project(os.environ["APPWRITE_FUNCTION_PROJECT_ID"])
-    #     .set_key(os.environ["APPWRITE_API_KEY"])
-    # )
+client = (
+    Client()    
+    .set_endpoint('https://cloud.appwrite.io/v1')
+    .set_project(PROJECT_ID)
+    .set_key(APPWRITE_API_KEY)
+)
 
-    # You can log messages to the console
-    context.log("Hello, Logs!")
+functions = Functions(client)
 
-    # If something goes wrong, log an error
-    context.error("Hello, Errors!")
+result = functions.create_execution(FUNCTION_getTodaysPrice_ID, path="/stock?symbol=QQQ", method='POST')
 
-    # The `ctx.req` object contains the request data
-    if context.req.method == "GET":
-        # Send a response with the res object helpers
-        # `ctx.res.send()` dispatches a string back to the client
-        return context.res.send("Hello, World!")
+print(result)
 
-    # `ctx.res.json()` is a handy helper for sending JSON
-    return context.res.json(
-        {
-            "motto": "Build like a team of hundreds_",
-            "learn": "https://appwrite.io/docs",
-            "connect": "https://appwrite.io/discord",
-            "getInspired": "https://builtwith.appwrite.io",
-        }
-    )
