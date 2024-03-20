@@ -40,10 +40,9 @@ def collect_symbols(query_req, body_req):
 # It's executed each time we get a request
 def main(context):
     
-    # Get the symbol of interest
-    query_params = context.req.query
+    # Get the symbol(s) of interest
     
-    context.log(json.dumps(query_params)) ##
+    context.log(json.dumps(context.req.query)) ##
     context.log(context.req.query_string) ##
     context.log(json.dumps(context.req.body)) ##
     context.log(context.req.body_raw) ##
@@ -85,20 +84,17 @@ def main(context):
         
         context.log(log)
         
-        resp = getStockPriceToday(symbol=symbol, finnhub_key=FINNHUB_API_KEY)
+        price_obj = getStockPriceToday(symbol=symbol, finnhub_key=FINNHUB_API_KEY)
         
-        context.log(resp)
+        context.log(price_obj)
         
         # Return error if it could not get symbol
-        if resp[0] == False:
+        if "error" in price_obj.keys():
             # If something goes wrong, log an error
-            context.error(resp[1])
-            return context.res.send(resp[1])
+            context.error(price_obj)
+            return context.res.json(price_obj)
         
-        # resp[1] contains price data if no error
-        price_data = resp[1]
-        
-        document_data = formatStockDocument(symbol=symbol, price_data=price_data)
+        document_data = formatStockDocument(symbol=symbol, price_data=price_obj)
         
         context.log("~~ pre dump ~~") ##
         context.log(json.dumps(document_data)) ##

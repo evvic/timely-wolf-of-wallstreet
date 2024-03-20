@@ -19,11 +19,11 @@ def getStockPriceToday(symbol: str, finnhub_key: str):
         quote = finnhub_client.quote(symbol)
     except finnhub.exceptions.FinnhubAPIException as e:
         errmsg = "Error getting quote: {}".format(e)
-        return (False, errmsg)
+        return {"error": errmsg}
     else:
         if not quote or "c" not in quote.keys():
             errmsg = "Error getting quote for {}".format(symbol)
-            return (False, errmsg)
+            return {"error": errmsg}
         
     return (True, quote)
 
