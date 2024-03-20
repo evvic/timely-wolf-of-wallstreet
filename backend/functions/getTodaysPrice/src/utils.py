@@ -33,6 +33,9 @@ def formatStockDocument(symbol: str, price_data: dict, date = None) -> dict:
     
     date = date if date else datetime.now()
     
+    # Create a new datetime object with year, month, and day only (time set to 00:00:00)
+    date = datetime(date.year, date.month, date.day)
+    
     stock_doc = {
         "symbol": symbol,
         "price": price_data["c"],
