@@ -47,6 +47,8 @@ def main(context):
     context.log(context.req.query_string) ##
     context.log(json.dumps(context.req.body)) ##
     context.log(context.req.body_raw) ##
+    context.log("context.req.body is {}".format(type(context.req.body))) ##
+    context.log("context.req.body_raw is {}".format(type(context.req.body_raw))) ##
     
     # Verify body is an actual dict
     body_obj = context.req.body_raw
