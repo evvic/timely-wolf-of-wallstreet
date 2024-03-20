@@ -1,7 +1,8 @@
-from appwrite.client import Client
 import os
 
+from appwrite.client import Client
 from appwrite.services.functions import Functions
+
 # Environment variables
 FINNHUB_API_KEY = os.environ['FINNHUB_API_KEY']
 PROJECT_ID = os.environ['PROJECT_ID']
@@ -22,4 +23,3 @@ functions = Functions(client)
 result = functions.create_execution(FUNCTION_getTodaysPrice_ID, path="/stock?symbol=QQQ", method='POST')
 
 print(result)
-
