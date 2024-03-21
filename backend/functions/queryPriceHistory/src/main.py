@@ -19,6 +19,9 @@ DATABASE_ID = os.environ['DATABASE_ID']
 COLLECTION_ID_CRYPTO = os.environ['COLLECTION_ID_CRYPTO']
 COLLECTION_ID_STOCK = os.environ['COLLECTION_ID_STOCK']
 
+def getHeaders():
+  return {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Content-Type"}
+
 # This is your Appwrite function
 # It's executed each time we get a request
 def main(context):
@@ -58,7 +61,7 @@ def main(context):
     
     docs = practiceQuery(market_type=market_type, symbol=symbol, timeseries=timeseries, window_offset=offset, window_size=length)
     
-    return context.res.json(docs)
+    return context.res.json(docs, 200, getHeaders())
    
     
 def queryTimeSeries(market_type, symbol, timeseries="WEEKLY", window_offset=0, window_size=52):
