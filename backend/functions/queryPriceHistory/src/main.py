@@ -61,6 +61,8 @@ def main(context):
     
     docs = practiceQuery(market_type=market_type, symbol=symbol, timeseries=timeseries, window_offset=offset, window_size=length)
     
+    context.log("Returning {} docs from db query".format(len(docs)))
+    
     return context.res.json(docs, 200, getHeaders())
    
     
