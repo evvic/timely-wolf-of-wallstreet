@@ -1,3 +1,7 @@
+# Cron Job Trigger: 0 20 * * 1-5
+# This function is triggered by a cron job to run every business day at 4pm (GMT-4)
+# (Approximately when the NYSE closes)
+# The function triggers getTodaysPrice function and passes the symbols to get price data for
 import os
 
 from appwrite.client import Client
