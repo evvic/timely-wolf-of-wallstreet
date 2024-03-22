@@ -23,6 +23,10 @@ STOCK_FUNC_BASE = "TIME_SERIES_"
 # PUT  - 
 # DELETE - 
 
+# Adds cors headers to response
+def getHeaders():
+    return {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Content-Type"}
+
 def parcePriceObjToDocument(symbol, date, values):
     date_obj = datetime.strptime(date, '%Y-%m-%d')
     iso_date_str = date_obj.isoformat()
@@ -144,9 +148,9 @@ def main(context):
     elif "stock" in context.req.path.lower():
         market_type = "stock"
     else:
-        errmsg = "Error: URL path `{}` does not include 'stock' or 'crypto' sub path".format(context.req.path)
+        errmsg = {"error":"URL path `{}` does not include 'stock' or 'crypto' sub path".format(context.req.path)}
         context.error(errmsg)
-        return context.res.send(errmsg)
+        return context.res.json(errmsg, 400, getHeaders())
     
     context.log("market_type = {}".format(market_type))
     
@@ -155,13 +159,13 @@ def main(context):
     # Error occured getting documents of API data
     if isinstance(documents, str):
         context.error(documents)
-        return context.res.send(documents)
+        return context.res.json({"error": documents}, 400, getHeaders())
     
     if context.req.method != "POST":
         # Do this to save bandwidth! Do not return all queried data or add to db cause that takes bandwidth
-        errmsg = "Method must be POST to populate database with the {} queried objects".format(len(documents))
+        errmsg = {"error": "Method must be POST to populate database with the {} queried objects".format(len(documents))}
         context.log(errmsg)
-        return context.res.send(errmsg)
+        return context.res.json(errmsg, 400, getHeaders())
         
     # Check method to either return documents or add to database
     # The `ctx.req` object contains the request data
@@ -198,5 +202,5 @@ def main(context):
         
         #documents = responses
     
-    return context.res.json(documents)
+    return context.res.json(documents, 200, getHeaders())
 

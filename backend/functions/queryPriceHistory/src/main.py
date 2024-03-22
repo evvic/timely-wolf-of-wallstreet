@@ -20,7 +20,7 @@ COLLECTION_ID_STOCK = os.environ['COLLECTION_ID_STOCK']
 
 # Adds cors headers to response
 def getHeaders():
-  return {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Content-Type"}
+    return {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Content-Type"}
 
 # Queries the database for stock/crypto timeseries price data based on query params
 # \param - market_type: either "stocks" or "crypto"

@@ -1,6 +1,5 @@
 import os
 import json
-import requests
 
 from appwrite.client import Client
 from appwrite.services.databases import Databases
@@ -15,6 +14,10 @@ FINNHUB_API_KEY = os.environ['FINNHUB_API_KEY']
 PROJECT_ID = os.environ['PROJECT_ID']
 DATABASE_ID = os.environ['DATABASE_ID']
 COLLECTION_ID_PROFILE = os.environ['COLLECTION_ID_PROFILE']
+
+# Adds cors headers to response
+def getHeaders():
+    return {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Content-Type"}
 
 # Functionalize symbols collection
 # Symbol can be passed through query param as a single string
@@ -36,8 +39,6 @@ def collect_symbols(query_req, body_req):
     
     return list(unique_symbols)
 
-# This is your Appwrite function
-# It's executed each time we get a request
 def main(context):
     
     # Get the symbol(s) of interest
@@ -62,9 +63,9 @@ def main(context):
     symbols = collect_symbols(query_req=context.req.query, body_req=body_obj)
     
     if len(symbols) <= 0:
-        errmsg = "Error: no symbol provided!\nCollected symbols: {}\nMust include i.e. ?symbol=AAPL".format(symbols)
+        errmsg = {"error": "no symbol provided!\nCollected symbols: {}\nMust include i.e. ?symbol=AAPL".format(symbols)}
         context.error(errmsg)
-        return context.res.send(errmsg)
+        return context.res.json(errmsg, 400, getHeaders())
     
     context.log(symbols) ##
     
@@ -92,7 +93,7 @@ def main(context):
         if "error" in price_obj.keys():
             # If something goes wrong, log an error
             context.error(price_obj)
-            return context.res.json(price_obj)
+            return context.res.json(price_obj, 400, getHeaders())
         
         document_data = formatStockDocument(symbol=symbol, price_data=price_obj)
         
@@ -116,14 +117,5 @@ def main(context):
             
             responses.append(resp)
             
-    return context.res.json(responses)
+    return context.res.json(responses, 200, getHeaders())
 
-    # `ctx.res.json()` is a handy helper for sending JSON
-    return context.res.json(
-        {
-            "motto": "Build like a team of hundreds_",
-            "learn": "https://appwrite.io/docs",
-            "connect": "https://appwrite.io/discord",
-            "getInspired": "https://builtwith.appwrite.io",
-        }
-    )
