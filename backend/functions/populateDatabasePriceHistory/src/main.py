@@ -189,18 +189,22 @@ def main(context):
         responses = []
         for index, doc in enumerate(documents):
             
-            resp = databases.create_document(
-                database_id=DATABASE_ID, 
-                collection_id=COLLECTION_ID_PROFILE,
-                document_id=ID.unique(),
-                data=doc
-            )
+            try:
+                resp = databases.create_document(
+                    database_id=DATABASE_ID, 
+                    collection_id=COLLECTION_ID_PROFILE,
+                    document_id=ID.unique(),
+                    data=doc
+                )
+            except Exception as e:
+                context.log(e)
+                continue
             
-            #responses.append(resp)
+            responses.append(resp)
             
-        #context.log("Added {} documents to {} collection".format(len(responses), COLLECTION_ID_PROFILE))
+        context.log("Added {} documents to {} collection".format(len(responses), COLLECTION_ID_PROFILE))
         
-        #documents = responses
+        documents = responses
     
     return context.res.json(documents, 200, getHeaders())
 
