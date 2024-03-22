@@ -8,6 +8,7 @@ from appwrite.id import ID
 from .utils import getStockPriceToday
 from .utils import formatStockDocument
 from .utils import strtolist
+from .utils import getCorsHeaders
 
 # Environment variables
 FINNHUB_API_KEY = os.environ['FINNHUB_API_KEY']
@@ -15,9 +16,6 @@ PROJECT_ID = os.environ['PROJECT_ID']
 DATABASE_ID = os.environ['DATABASE_ID']
 COLLECTION_ID_PROFILE = os.environ['COLLECTION_ID_PROFILE']
 
-# Adds cors headers to response
-def getHeaders():
-    return {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Content-Type"}
 
 # Functionalize symbols collection
 # Symbol can be passed through query param as a single string
@@ -65,7 +63,7 @@ def main(context):
     if len(symbols) <= 0:
         errmsg = {"error": "no symbol provided!\nCollected symbols: {}\nMust include i.e. ?symbol=AAPL".format(symbols)}
         context.error(errmsg)
-        return context.res.json(errmsg, 400, getHeaders())
+        return context.res.json(errmsg, 400, getCorsHeaders())
     
     context.log(symbols) ##
     
@@ -93,7 +91,7 @@ def main(context):
         if "error" in price_obj.keys():
             # If something goes wrong, log an error
             context.error(price_obj)
-            return context.res.json(price_obj, 400, getHeaders())
+            return context.res.json(price_obj, 400, getCorsHeaders())
         
         document_data = formatStockDocument(symbol=symbol, price_data=price_obj)
         
@@ -117,4 +115,4 @@ def main(context):
             
             responses.append(resp)
             
-    return context.res.json(responses, 200, getHeaders())
+    return context.res.json(responses, 200, getCorsHeaders())

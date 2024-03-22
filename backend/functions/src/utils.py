@@ -1,6 +1,10 @@
 from datetime import date, datetime, timedelta
 import finnhub
 
+# Adds cors headers to response
+def getCorsHeaders():
+    return {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Content-Type"}
+
 # String to list
 def strtolist(var):
     if isinstance(var, str):

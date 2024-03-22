@@ -10,6 +10,7 @@ from appwrite.services.databases import Databases
 from appwrite.query import Query
 
 from .utils import get_date_list
+from .utils import getCorsHeaders
 
 # Environment variables
 APPWRITE_API_KEY = os.environ['APPWRITE_API_KEY']
@@ -17,10 +18,6 @@ PROJECT_ID = os.environ['PROJECT_ID']
 DATABASE_ID = os.environ['DATABASE_ID']
 COLLECTION_ID_CRYPTO = os.environ['COLLECTION_ID_CRYPTO']
 COLLECTION_ID_STOCK = os.environ['COLLECTION_ID_STOCK']
-
-# Adds cors headers to response
-def getHeaders():
-    return {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Content-Type"}
 
 # Queries the database for stock/crypto timeseries price data based on query params
 # \param - market_type: either "stocks" or "crypto"
@@ -94,7 +91,7 @@ def main(context):
     else:
         errmsg = "URL path `{}` does not include 'stock' or 'crypto' sub path".format(context.req.path)
         context.error(errmsg)
-        return context.res.json({"error": errmsg}, 400, getHeaders())
+        return context.res.json({"error": errmsg}, 400, getCorsHeaders())
     
     context.log("market_type = {}".format(market_type))
     
@@ -102,7 +99,7 @@ def main(context):
     if "symbol" not in context.req.query.keys():
         errmsg = "Query param 'symbol' is required"
         context.error(errmsg)
-        return context.res.json({"error": errmsg}, 400, getHeaders())
+        return context.res.json({"error": errmsg}, 400, getCorsHeaders())
     
     symbol = context.req.query["symbol"]
     
@@ -118,5 +115,5 @@ def main(context):
     
     context.log("Returning {} docs from db query".format(len(docs[0])))
     
-    return context.res.json(docs[0], docs[1], getHeaders())
+    return context.res.json(docs[0], docs[1], getCorsHeaders())
 

@@ -7,6 +7,8 @@ from appwrite.client import Client
 from appwrite.services.databases import Databases
 from appwrite.id import ID
 
+from .utils import getCorsHeaders
+
 # Environment variables
 ALPHAVANTAGE_API_KEY = os.environ['ALPHAVANTAGE_API_KEY']
 PROJECT_ID = os.environ['PROJECT_ID']
@@ -23,9 +25,6 @@ STOCK_FUNC_BASE = "TIME_SERIES_"
 # PUT  - 
 # DELETE - 
 
-# Adds cors headers to response
-def getHeaders():
-    return {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Content-Type"}
 
 def parcePriceObjToDocument(symbol, date, values):
     date_obj = datetime.strptime(date, '%Y-%m-%d')
@@ -150,7 +149,7 @@ def main(context):
     else:
         errmsg = {"error":"URL path `{}` does not include 'stock' or 'crypto' sub path".format(context.req.path)}
         context.error(errmsg)
-        return context.res.json(errmsg, 400, getHeaders())
+        return context.res.json(errmsg, 400, getCorsHeaders())
     
     context.log("market_type = {}".format(market_type))
     
@@ -159,13 +158,13 @@ def main(context):
     # Error occured getting documents of API data
     if isinstance(documents, str):
         context.error(documents)
-        return context.res.json({"error": documents}, 400, getHeaders())
+        return context.res.json({"error": documents}, 400, getCorsHeaders())
     
     if context.req.method != "POST":
         # Do this to save bandwidth! Do not return all queried data or add to db cause that takes bandwidth
         errmsg = {"error": "Method must be POST to populate database with the {} queried objects".format(len(documents))}
         context.log(errmsg)
-        return context.res.json(errmsg, 400, getHeaders())
+        return context.res.json(errmsg, 400, getCorsHeaders())
         
     # Check method to either return documents or add to database
     # The `ctx.req` object contains the request data
@@ -206,4 +205,4 @@ def main(context):
         
         documents = responses
     
-    return context.res.json(documents, 200, getHeaders())
+    return context.res.json(documents, 200, getCorsHeaders())
