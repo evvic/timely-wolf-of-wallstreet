@@ -117,4 +117,4 @@ def main(context):
     context.log("Returning {} docs from db query".format(len(docs[0])))
     
     return context.res.json(docs[0], docs[1], getHeaders())
-   
+
