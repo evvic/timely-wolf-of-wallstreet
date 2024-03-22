@@ -52,10 +52,8 @@ def queryTimeSeries(market_type: str, symbol: str, timeseries: str="WEEKLY", win
             .set_endpoint("https://cloud.appwrite.io/v1")
             .set_project(PROJECT_ID)
             .set_key(APPWRITE_API_KEY)
+            .set_self_signed(status=True)
     )
-    
-    client.set_self_signed(status=True)
-    #client.set_key(APPWRITE_API_KEY)
 
     databases = Databases(client)   
     
