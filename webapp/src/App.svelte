@@ -50,19 +50,19 @@
       Nancy's Top 5 Stocks
     </h1>
     <button
-      class={`bg-sky-500 rounded-xl p-2 ${timeseries === 'DAILY' ? 'bg-green-300' : 'bg-sky-500'}`}
+      class={`bg-sky-500 rounded-xl p-2 ${timeseries === 'DAILY' ? 'bg-green-400' : 'bg-sky-500'}`}
       on:click={() => (timeseries = "DAILY")}
     >
       Daily
     </button>
     <button
-      class={`bg-sky-500 rounded-xl p-2 ${timeseries === 'WEEKLY' ? 'bg-green-300' : 'bg-sky-500'}`}
+      class={`bg-sky-500 rounded-xl p-2 ${timeseries === 'WEEKLY' ? 'bg-green-400' : 'bg-sky-500'}`}
       on:click={() => (timeseries = "WEEKLY")}
     >
       Weekly
     </button>
     <button
-      class={`bg-sky-500 rounded-xl p-2 ${timeseries === 'MONTHLY' ? 'bg-green-300' : 'bg-sky-500'}`}
+      class={`bg-sky-500 rounded-xl p-2 ${timeseries === 'MONTHLY' ? 'bg-green-400' : 'bg-sky-500'}`}
       on:click={() => (timeseries = "MONTHLY")}
     >
       Monthly
