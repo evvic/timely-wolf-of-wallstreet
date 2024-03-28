@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "lightweight-charts": "^4.1.3",
-    "svelte-lightweight-charts": "^2.2.0"
-  }
-}
