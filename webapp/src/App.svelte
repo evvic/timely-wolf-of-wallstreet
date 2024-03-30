@@ -1,5 +1,6 @@
 <script lang="ts">
   // import "../app.css";
+  import Ferdous from "./components/Ferdous.svelte";
 
   const key: string = import.meta.env.VITE_PUBLIC_STOCK_API_KEY;
 
@@ -8,39 +9,36 @@
     price: number | void;
     pChange: number | void;
   }
+  let timeseries = "WEEKLY";
 
-  const trackedNames = [
-    "Nvidia",
-    "Apple",
-    "Microsoft",
-    "Google",
-    "AllianceBernstein Holding LP",
-  ];
+  let graphData: { time: string; value: number }[] = [];
 
-  const trackedSymbols = ["NVDA", "AAPL", "MSFT", "GOOGL", "AB"];
-
-  let topList: stock[] = [];
+  const trackedSymbols = ["QQQ"];
 
   async function getStocks() {
-    for (let i = 0; i < trackedSymbols.length; i++) {
-      fetch(
-        `https://finnhub.io/api/v1/quote?symbol=${trackedSymbols[i]}&token=${key}`,
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          const cur: stock = {
-            name: trackedSymbols[i],
-            price: data.c,
-            pChange: data.dp,
-          };
-          topList = [...topList, cur];
-        })
-        .catch((error) => {
-          console.log(error);
-          return [];
-        });
-    }
+    console.log(graphData);
+  }
+
+  async function fetchData() {
+    await fetch(
+      `https://65f7764db2fafbd9238d.appwrite.global/stocks?symbol=${trackedSymbols[0]}&timeseries=${timeseries}&offset=1`,
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        graphData = []
+
+        for (let i = 0; i < data.documents.length; i++) {
+          const time = data.documents[i].date.slice(0, 10);
+          const value = data.documents[i].price;
+          const cur = { time: time, value: value };
+
+          graphData = [...graphData, cur];
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 </script>
 
@@ -51,34 +49,36 @@
     >
       Nancy's Top 5 Stocks
     </h1>
-
     <button
-      type="button"
-      class="rounded-xl bg-blue-500 hover:bg-green-500 p-1 max-h-8 max-w-32 font-bold"
-      on:click={getStocks}
+      class={`bg-sky-500 rounded-xl p-2 ${timeseries === 'DAILY' ? 'bg-green-400' : 'bg-sky-500'}`}
+      on:click={() => (timeseries = "DAILY")}
     >
-      Get Stocks
+      Daily
+    </button>
+    <button
+      class={`bg-sky-500 rounded-xl p-2 ${timeseries === 'WEEKLY' ? 'bg-green-400' : 'bg-sky-500'}`}
+      on:click={() => (timeseries = "WEEKLY")}
+    >
+      Weekly
+    </button>
+    <button
+      class={`bg-sky-500 rounded-xl p-2 ${timeseries === 'MONTHLY' ? 'bg-green-400' : 'bg-sky-500'}`}
+      on:click={() => (timeseries = "MONTHLY")}
+    >
+      Monthly
     </button>
   </div>
-
-  <div class="flex flex-col items-center">
-    {#if topList}
-      {#each topList as item}
-        <div
-          class="flex border-zinc-500 bg-zinc-400 font-bold border-2 min-w-64 rounded-xl p-1 mb-2 flex-row justify-between"
-        >
-          <div class="">
-            <p>{item.name}</p>
-          </div>
-
-          <div>
-            <p>Price: {item.price}</p>
-            <p>Change: {item.pChange}%</p>
-          </div>
-        </div>
-      {/each}
-    {/if}
-  </div>
+  {#key timeseries}
+    {#await fetchData()}
+      <div class="flex flex-col items-center text-white">
+        <p>Loading...</p>
+      </div>
+    {:then chart}
+      <div class="flex flex-col items-center">
+        <Ferdous width={420} height={420} {graphData} />
+      </div>
+    {/await}
+  {/key}
 </main>
 
 <style lang="postcss">
