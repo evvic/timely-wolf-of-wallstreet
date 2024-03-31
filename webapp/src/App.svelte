@@ -22,7 +22,8 @@
             color: '#2B2B43',
           },
           lineColor: '#2B2B43',
-          textColor: '#D9D9D9',
+          textColor: 'white',
+          fontWeight: 'bold',
         },
         watermark: {
           color: 'rgba(0, 0, 0, 0)',
