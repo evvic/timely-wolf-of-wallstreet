@@ -15,6 +15,11 @@ PROJECT_ID = os.environ['PROJECT_ID']
 DATABASE_ID = os.environ['DATABASE_ID']
 COLLECTION_ID_PROFILE = os.environ['COLLECTION_ID_PROFILE']
 
+# Hardcode the symbols to be added daily to the database triggered by the cron job
+# A temporary workaround until appwrite allows querying the database for a unique list
+# of all the attribute 'symbol' values
+DAILY_SYMBOLS = ["QQQ", "AAPL", "MSFT", "NVDA", "TSLA", "PANW"]
+
 # Adds cors headers to response
 def getHeaders():
     return {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Content-Type"}
@@ -41,6 +46,13 @@ def collect_symbols(query_req, body_req):
 
 def main(context):
     
+    # Replace context.req.body_raw with DAILY_SYMBOLS
+    # when this function is triggered by the daily cron job
+    if context.req.headers['x-appwrite-trigger'] == 'schedule':
+        context.log("context.req.body_raw before overwrite with DAILY_SYMBOLS:") ##
+        context.log(context.req.body_raw) ##
+        context.req.body_raw = json.dumps({"symbols": DAILY_SYMBOLS})
+        
     # Get the symbol(s) of interest
     
     context.log(json.dumps(context.req.query)) ##
