@@ -51,7 +51,8 @@ def main(context):
     if context.req.headers['x-appwrite-trigger'] == 'schedule':
         context.log("context.req.body_raw before overwrite with DAILY_SYMBOLS:") ##
         context.log(context.req.body_raw) ##
-        context.req.body_raw = json.dumps({"symbols": DAILY_SYMBOLS})
+        context.req.body = {"symbols": DAILY_SYMBOLS}
+        context.req.body_raw = json.dumps(context.req.body)
         context.req.method = "POST"
         
     context.log(context.req.method)    
