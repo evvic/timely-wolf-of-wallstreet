@@ -70,7 +70,8 @@ def main(context):
     elif not isinstance(context.req.body_raw, dict):
         context.log("context.req.body_raw is not an instance of a dict, calling json.loads")
         body_obj = json.loads(context.req.body_raw)
-    
+    context.log("body_obj:") ##
+    context.log(body_obj) ##
     # Collect symbols
     symbols = collect_symbols(query_req=context.req.query, body_req=body_obj)
     
