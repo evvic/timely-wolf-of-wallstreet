@@ -52,9 +52,9 @@ def main(context):
         context.log("context.req.body_raw before overwrite with DAILY_SYMBOLS:") ##
         context.log(context.req.body_raw) ##
         context.req.body_raw = json.dumps({"symbols": DAILY_SYMBOLS})
+        context.req.method = "POST"
         
-    # Get the symbol(s) of interest
-    
+    context.log(context.req.method)    
     context.log(json.dumps(context.req.query)) ##
     context.log(context.req.query_string) ##
     context.log(json.dumps(context.req.body)) ##
