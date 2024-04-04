@@ -2,16 +2,9 @@
   // import "../app.css";
   import Ferdous from "./components/Ferdous.svelte";
 
-  const key: string = import.meta.env.VITE_PUBLIC_STOCK_API_KEY;
-
-  interface stock {
-    name: string | void;
-    price: number | void;
-    pChange: number | void;
-  }
   let timeseries = "WEEKLY";
 
-  let graphData: { time: string; value: number }[] = [];
+  let graphData: { time: string; value: number; symbol: string }[] = [];
 
   // Define the theme object here
   const THEME = {
@@ -48,36 +41,37 @@
       
   };
 
-  const trackedSymbols = ["QQQ"];
+  const trackedSymbols = ["QQQ", "PANW", "TSLA", "AAPL", "MSFT", "NVDA"];
 
-  async function getStocks() {
-    console.log(graphData);
-  }
+  // function getStocks() {
+  //   console.log(graphData);
+  // }
 
   async function fetchData() {
-    await fetch(
-      `https://65f7764db2fafbd9238d.appwrite.global/stocks?symbol=${trackedSymbols[0]}&timeseries=${timeseries}&offset=1`,
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        graphData = []
+    graphData = []
+    for (let i = 0; i < trackedSymbols.length; i++) {
+      await fetch(
+        `https://65f7764db2fafbd9238d.appwrite.global/stocks?symbol=${trackedSymbols[i]}&timeseries=${timeseries}&offset=1`,
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          for (let j = 0; j < data.documents.length; j++) {
+            const time = data.documents[j].date.slice(0, 10);
+            const value = data.documents[j].price;
+            const cur = { time: time, value: value, symbol: trackedSymbols[i] };
 
-        for (let i = 0; i < data.documents.length; i++) {
-          const time = data.documents[i].date.slice(0, 10);
-          const value = data.documents[i].price;
-          const cur = { time: time, value: value };
-
-          graphData = [...graphData, cur];
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+            graphData = [...graphData, cur];
+          }
+          console.log(graphData);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 </script>
 
-<main class="h-screen w-screen bg-neutral-900">
+<main class="h-dvh w-screen bg-neutral-900 overflow-y-scroll">
   <div class="flex-col text-center mb-2">
     <h1
       class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
@@ -85,19 +79,19 @@
       Nancy's Top 5 Stocks
     </h1>
     <button
-      class={`bg-sky-500 rounded-xl p-2 ${timeseries === 'DAILY' ? 'bg-green-400' : 'bg-sky-500'}`}
+      class={`bg-sky-500 rounded-xl p-2 ${timeseries === "DAILY" ? "bg-green-400" : "bg-sky-500"}`}
       on:click={() => (timeseries = "DAILY")}
     >
       Daily
     </button>
     <button
-      class={`bg-sky-500 rounded-xl p-2 ${timeseries === 'WEEKLY' ? 'bg-green-400' : 'bg-sky-500'}`}
+      class={`bg-sky-500 rounded-xl p-2 ${timeseries === "WEEKLY" ? "bg-green-400" : "bg-sky-500"}`}
       on:click={() => (timeseries = "WEEKLY")}
     >
       Weekly
     </button>
     <button
-      class={`bg-sky-500 rounded-xl p-2 ${timeseries === 'MONTHLY' ? 'bg-green-400' : 'bg-sky-500'}`}
+      class={`bg-sky-500 rounded-xl p-2 ${timeseries === "MONTHLY" ? "bg-green-400" : "bg-sky-500"}`}
       on:click={() => (timeseries = "MONTHLY")}
     >
       Monthly
