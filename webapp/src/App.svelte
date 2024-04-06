@@ -1,6 +1,8 @@
 <script lang="ts">
   // import "../app.css";
   import Ferdous from "./components/Ferdous.svelte";
+  import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
+  import { ChevronDownIcon } from "@heroicons/vue/20/solid";
 
   let timeseries = "WEEKLY";
 
@@ -13,7 +15,7 @@
   // }
 
   async function fetchData() {
-    graphData = []
+    graphData = [];
     for (let i = 0; i < trackedSymbols.length; i++) {
       await fetch(
         `https://65f7764db2fafbd9238d.appwrite.global/stocks?symbol=${trackedSymbols[i]}&timeseries=${timeseries}&offset=1`,
@@ -61,6 +63,68 @@
     >
       Monthly
     </button>
+
+    <template>
+      <Menu as="div" class="relative inline-block text-left">
+        <div>
+          <MenuButton
+            class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          >
+            Options
+            <ChevronDownIcon
+              class="-mr-1 h-5 w-5 text-gray-400"
+              aria-hidden="true"
+            />
+          </MenuButton>
+        </div>
+
+        <transition
+          enter-active-class="transition ease-out duration-100"
+          enter-from-class="transform opacity-0 scale-95"
+          enter-to-class="transform opacity-100 scale-100"
+          leave-active-class="transition ease-in duration-75"
+          leave-from-class="transform opacity-100 scale-100"
+          leave-to-class="transform opacity-0 scale-95"
+        >
+          <MenuItems
+            class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+          >
+            <div class="py-1">
+              <MenuItem v-slot={active}>
+                <a
+                  
+                  class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']"
+                  >Account settings</a
+                >
+              </MenuItem>
+              <MenuItem v-slot={active}>
+                <a
+                  href="#"
+                  :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']"
+                  >Support</a
+                >
+              </MenuItem>
+              <MenuItem v-slot={active}>
+                <a
+                  href="#"
+                  :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']"
+                  >License</a
+                >
+              </MenuItem>
+              <form method="POST" action="#">
+                <MenuItem v-slot={active}>
+                  <button
+                    type="submit"
+                    :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block w-full px-4 py-2 text-left text-sm']"
+                    >Sign out</button
+                  >
+                </MenuItem>
+              </form>
+            </div>
+          </MenuItems>
+        </transition>
+      </Menu>
+    </template>
   </div>
   {#key timeseries}
     {#await fetchData()}
@@ -68,53 +132,55 @@
         <p>Loading...</p>
       </div>
     {:then chart}
-      <div class="flex flex-col items-center mb-10 text-white">
-        QQQ
-        <Ferdous
-          width={420}
-          height={420}
-          graphData={graphData.filter((item) => item.symbol == "QQQ")}
-        />
-      </div>
-      <div class="flex flex-col items-center mb-10 text-white">
-        PANW
-        <Ferdous
-          width={420}
-          height={420}
-          graphData={graphData.filter((item) => item.symbol == "PANW")}
-        />
-      </div>
-      <div class="flex flex-col items-center mb-10 text-white">
-        TSLA
-        <Ferdous
-          width={420}
-          height={420}
-          graphData={graphData.filter((item) => item.symbol == "TSLA")}
-        />
-      </div>
-      <div class="flex flex-col items-center mb-10 text-white">
-        AAPL
-        <Ferdous
-          width={420}
-          height={420}
-          graphData={graphData.filter((item) => item.symbol == "AAPL")}
-        />
-      </div>
-      <div class="flex flex-col items-center mb-10 text-white">
-        MSFT
-        <Ferdous
-          width={420}
-          height={420}
-          graphData={graphData.filter((item) => item.symbol == "MSFT")}
-        />
-      </div>
-      <div class="flex flex-col items-center mb-10 text-white">
-        NVDA
-        <Ferdous
-          width={420}
-          height={420}
-          graphData={graphData.filter((item) => item.symbol == "NVDA")}
-        />
+      <div class="grid grid-rows-3 grid-flow-col gap-4">
+        <div class="flex flex-col items-center mb-10 text-white">
+          QQQ
+          <Ferdous
+            width={420}
+            height={420}
+            graphData={graphData.filter((item) => item.symbol == "QQQ")}
+          />
+        </div>
+        <div class="flex flex-col items-center mb-10 text-white">
+          PANW
+          <Ferdous
+            width={420}
+            height={420}
+            graphData={graphData.filter((item) => item.symbol == "PANW")}
+          />
+        </div>
+        <div class="flex flex-col items-center mb-10 text-white">
+          TSLA
+          <Ferdous
+            width={420}
+            height={420}
+            graphData={graphData.filter((item) => item.symbol == "TSLA")}
+          />
+        </div>
+        <div class="flex flex-col items-center mb-10 text-white">
+          AAPL
+          <Ferdous
+            width={420}
+            height={420}
+            graphData={graphData.filter((item) => item.symbol == "AAPL")}
+          />
+        </div>
+        <div class="flex flex-col items-center mb-10 text-white">
+          MSFT
+          <Ferdous
+            width={420}
+            height={420}
+            graphData={graphData.filter((item) => item.symbol == "MSFT")}
+          />
+        </div>
+        <div class="flex flex-col items-center mb-10 text-white">
+          NVDA
+          <Ferdous
+            width={420}
+            height={420}
+            graphData={graphData.filter((item) => item.symbol == "NVDA")}
+          />
+        </div>
       </div>
     {/await}
   {/key}
