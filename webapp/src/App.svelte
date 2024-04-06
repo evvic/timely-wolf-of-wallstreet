@@ -13,6 +13,41 @@
 
   let graphData: { time: string; value: number }[] = [];
 
+  // Define the theme object here
+  const THEME = {
+    chart: {
+        layout: {
+          background: {
+            type: 'solid',
+            color: '#2B2B43',
+          },
+          lineColor: '#2B2B43',
+          textColor: 'white',
+          fontWeight: 'bold',
+        },
+        watermark: {
+          color: 'rgba(0, 0, 0, 0)',
+        },
+        crosshair: {
+          color: '#758696',
+        },
+        grid: {
+          vertLines: {
+            color: '#2B2B43',
+          },
+          horzLines: {
+            color: '#363C4E',
+          },
+        },
+      },
+      series: {
+        topColor: 'rgba(32, 226, 47, 0.56)',
+        bottomColor: 'rgba(32, 226, 47, 0.04)',
+        lineColor: 'rgba(32, 226, 47, 1)',
+      },
+      
+  };
+
   const trackedSymbols = ["QQQ"];
 
   async function getStocks() {
@@ -75,7 +110,7 @@
       </div>
     {:then chart}
       <div class="flex flex-col items-center">
-        <Ferdous width={420} height={420} {graphData} />
+        <Ferdous width={420} height={420} {graphData} theme={THEME} />
       </div>
     {/await}
   {/key}
