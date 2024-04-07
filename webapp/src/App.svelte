@@ -5,6 +5,7 @@
   let timeseries = "WEEKLY";
 
   let graphData: { time: string; value: number; symbol: string }[] = [];
+  let graphData: { time: string; value: number; symbol: string }[] = [];
 
   // Define the theme object here
   const THEME = {
@@ -42,6 +43,9 @@
 
   const trackedSymbols = ["QQQ", "PANW", "TSLA", "AAPL", "MSFT", "NVDA"];
 
+  // function getStocks() {
+  //   console.log(graphData);
+  // }
   // function getStocks() {
   //   console.log(graphData);
   // }
@@ -91,6 +95,7 @@
   };
 </script>
 
+<main class="h-dvh w-screen bg-neutral-900 overflow-y-scroll">
 <main class="h-dvh w-screen bg-neutral-900 overflow-y-scroll">
   <div class="flex-col text-center mb-2">
     <h1
