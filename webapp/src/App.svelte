@@ -5,7 +5,6 @@
   let timeseries = "WEEKLY";
 
   let graphData: { time: string; value: number; symbol: string }[] = [];
-  let graphData: { time: string; value: number; symbol: string }[] = [];
 
   // Define the theme object here
   const THEME = {
@@ -96,7 +95,6 @@
 </script>
 
 <main class="h-dvh w-screen bg-neutral-900 overflow-y-scroll">
-<main class="h-dvh w-screen bg-neutral-900 overflow-y-scroll">
   <div class="flex-col text-center mb-2">
     <h1
       class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
@@ -104,7 +102,7 @@
       Nancy's Top 5 Stocks
     </h1>
 
-    <div class="flex justify-center ">
+    <div class="flex justify-center">
       <div class="" on:focusout={handleDropdownFocusLoss}>
         <button class="btn m-1" on:click={handleDropdownClick}>
           {#if isDropdownOpen}
@@ -135,19 +133,22 @@
           <li class="hover:bg-slate-800 text-left">
             <button
               class="btn text-white p-1 w-full text-left"
-              on:click={() => timeseries = "DAILY"} on:click={handleDropdownClick}>DAILY</button
+              on:click={() => (timeseries = "DAILY")}
+              on:click={handleDropdownClick}>DAILY</button
             >
           </li>
           <li class="hover:bg-slate-800">
             <button
               class="btn text-white p-1 w-full text-left"
-              on:click={() => timeseries = "WEEKLY"} on:click={handleDropdownClick}>WEEKLY</button
+              on:click={() => (timeseries = "WEEKLY")}
+              on:click={handleDropdownClick}>WEEKLY</button
             >
           </li>
           <li class="hover:bg-slate-800">
             <button
               class="btn text-white p-1 w-full text-left"
-              on:click={() => timeseries = "MONTHLY"} on:click={handleDropdownClick}>MONTHLY</button
+              on:click={() => (timeseries = "MONTHLY")}
+              on:click={handleDropdownClick}>MONTHLY</button
             >
           </li>
         </ul>
