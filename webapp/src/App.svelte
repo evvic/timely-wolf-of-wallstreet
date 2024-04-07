@@ -328,16 +328,14 @@
           </li>
           <li class="hover:bg-slate-800 w-full">
             <button
-              class=" text-white p-1 w-full"
-              on:click={() => (timeseries = "WEEKLY")}
-              on:click={handleDropdownClick}>WEEKLY</button
+              class="btn text-white p-1 w-full text-left"
+              on:click={() => timeseries = "WEEKLY"} on:click={handleDropdownClick}>WEEKLY</button
             >
           </li>
           <li class="hover:bg-slate-800 w-full">
             <button
-              class=" text-white p-1 w-full"
-              on:click={() => (timeseries = "MONTHLY")}
-              on:click={handleDropdownClick}>MONTHLY</button
+              class="btn text-white p-1 w-full text-left"
+              on:click={() => timeseries = "MONTHLY"} on:click={handleDropdownClick}>MONTHLY</button
             >
           </li>
         </ul>
