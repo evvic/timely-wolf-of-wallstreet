@@ -1,0 +1,13 @@
+{
+    "manifest_version": 3,
+    "name": "Daily Tab Opener",
+    "version": "1.0",
+    "description": "Opens a new tab to a specific webpage once every 24 hours or when the extension icon is clicked",
+    "permissions": ["alarms", "tabs"],
+    "action": {
+      "default_popup": ""
+    },
+    "background": {
+      "service_worker": "background.js"
+    }
+  }
