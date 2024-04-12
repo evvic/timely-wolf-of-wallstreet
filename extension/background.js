@@ -1,5 +1,5 @@
 // URL to open in the new tab
-const targetUrl = "https://www.example.com";
+const targetUrl = "https://dailychart.freewebhostmost.com/";
 
 // Create a daily alarm to trigger the new tab opening
 chrome.alarms.create("openNewTab", { periodInMinutes: 1440 });
