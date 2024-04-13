@@ -110,7 +110,7 @@
       </div>
     {:then chart}
       <div class="flex flex-col items-center">
-        <Ferdous width={420} height={420} {graphData} theme={THEME} />
+        <Ferdous width={420} height={420} {graphData} theme={THEME} symbolName={"Apple Computer, Incorporated"} />
       </div>
     {/await}
   {/key}
