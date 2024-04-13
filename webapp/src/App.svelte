@@ -121,16 +121,16 @@
               />
             </svg>
           {:else}
-            <div class="h-10 w-min bg-slate-500 rounded-xl p-2 font-bold">
+            <div class="h-10 w-min bg-slate-500 rounded-xl p-2 font-bold text-white">
               <p>{timeseries}🔽</p>
             </div>
           {/if}
         </button>
         <ul
-          class="bg-slate-500 rounded-box w-min rounded-lg py-2"
+          class="bg-slate-500 rounded-box w-min rounded-lg py-2 font-bold"
           style:visibility={isDropdownOpen ? "visible" : "hidden"}
         >
-          <li class="hover:bg-slate-800 text-left">
+          <li class="hover:bg-slate-800 text-left ">
             <button
               class="btn text-white p-1 w-full text-left"
               on:click={() => (timeseries = "DAILY")}
