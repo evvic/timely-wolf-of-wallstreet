@@ -6,6 +6,7 @@
   export let width: number = 800;
   export let height: number = 600;
   export let theme: any;
+ 
 
   
 </script>
