@@ -163,65 +163,17 @@
         </div>
       {:then chart}
         <div class="sm:grid sm:grid-rows-3 sm:grid-flow-col sm:gap-3">
+          {#each trackedSymbols as graph}
           <div class="flex flex-col items-center">
-            <p class="text-white">QQQ</p>
+            <p class="text-white">{graph}</p>
             <Ferdous
               width={420}
               height={420}
               theme={THEME}
-              graphData={graphData.filter((item) => item.symbol == "QQQ")}
+              graphData={graphData.filter((item) => item.symbol == graph)}
             />
           </div>
-
-          <div class="flex flex-col items-center">
-            <p class="text-white">PANW</p>
-            <Ferdous
-              width={420}
-              height={420}
-              theme={THEME}
-              graphData={graphData.filter((item) => item.symbol == "PANW")}
-            />
-          </div>
-
-          <div class="flex flex-col items-center">
-            <p class="text-white">TSLA</p>
-            <Ferdous
-              width={420}
-              height={420}
-              theme={THEME}
-              graphData={graphData.filter((item) => item.symbol == "TSLA")}
-            />
-          </div>
-
-          <div class="flex flex-col items-center">
-            <p class="text-white">AAPL</p>
-            <Ferdous
-              width={420}
-              height={420}
-              theme={THEME}
-              graphData={graphData.filter((item) => item.symbol == "AAPL")}
-            />
-          </div>
-
-          <div class="flex flex-col items-center">
-            <p class="text-white">MSFT</p>
-            <Ferdous
-              width={420}
-              height={420}
-              theme={THEME}
-              graphData={graphData.filter((item) => item.symbol == "MSFT")}
-            />
-          </div>
-
-          <div class="flex flex-col items-center">
-            <p class="text-white">NVDA</p>
-            <Ferdous
-              width={420}
-              height={420}
-              theme={THEME}
-              graphData={graphData.filter((item) => item.symbol == "NVDA")}
-            />
-          </div>
+          {/each}
         </div>
       {/await}
     {/key}
