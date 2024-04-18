@@ -15,6 +15,11 @@ PROJECT_ID = os.environ['PROJECT_ID']
 DATABASE_ID = os.environ['DATABASE_ID']
 COLLECTION_ID_PROFILE = os.environ['COLLECTION_ID_PROFILE']
 
+# Hardcode the symbols to be added daily to the database triggered by the cron job
+# A temporary workaround until appwrite allows querying the database for a unique list
+# of all the attribute 'symbol' values
+DAILY_SYMBOLS = ["QQQ", "AAPL", "MSFT", "NVDA", "TSLA", "PANW"]
+
 # Adds cors headers to response
 def getHeaders():
     return {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Content-Type"}
@@ -41,14 +46,20 @@ def collect_symbols(query_req, body_req):
 
 def main(context):
     
-    # Get the symbol(s) of interest
-    
-    context.log(json.dumps(context.req.query)) ##
-    context.log(context.req.query_string) ##
-    context.log(json.dumps(context.req.body)) ##
-    context.log(context.req.body_raw) ##
-    context.log("context.req.body is {}".format(type(context.req.body))) ##
-    context.log("context.req.body_raw is {}".format(type(context.req.body_raw))) ##
+    # Replace context.req.body_raw with DAILY_SYMBOLS
+    # when this function is triggered by the daily cron job
+    if context.req.headers['x-appwrite-trigger'] == 'schedule':
+        context.log("getTodaysPrice function triggered by cron schedule!")
+        context.log("-> Overwritting body with hardcoded DAILY_SYMBOLS...")
+        context.log("-> Overwritting HTTP method to POST...")
+        context.req.body = {"symbols": DAILY_SYMBOLS}
+        context.req.body_raw = json.dumps(context.req.body)
+        context.req.method = "POST"
+        
+    # Logging relevant context:
+    context.log(context.req.method)  
+    context.log(context.req.query_string)
+    context.log(context.req.body_raw)
     
     # Verify body is an actual dict
     body_obj = context.req.body_raw
@@ -58,7 +69,7 @@ def main(context):
     elif not isinstance(context.req.body_raw, dict):
         context.log("context.req.body_raw is not an instance of a dict, calling json.loads")
         body_obj = json.loads(context.req.body_raw)
-    
+
     # Collect symbols
     symbols = collect_symbols(query_req=context.req.query, body_req=body_obj)
     
@@ -81,7 +92,7 @@ def main(context):
     responses = []
     for symbol in symbols:
 
-        log = "\nsymbol == {}\n".format(symbol)
+        log = "\nsymbol: {}".format(symbol)
         
         context.log(log)
         
@@ -97,14 +108,13 @@ def main(context):
         
         document_data = formatStockDocument(symbol=symbol, price_data=price_obj)
         
-        context.log("~~ pre dump ~~") ##
-        context.log(json.dumps(document_data)) ##
-        context.log("~~ post dump ~~") ##
-        
-        # The `ctx.req` object contains the request data
+        context.log("Formatted document ready to push to database:")
+        context.log(json.dumps(document_data))
+
+        # GET does not post to database, only adds to the response object
         if context.req.method == "GET":
-            #return context.res.json(document_data)
             responses.append(document_data)
+
         # POST stock price data to database (create a document)
         elif context.req.method == "POST":
             
