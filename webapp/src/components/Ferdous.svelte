@@ -6,7 +6,7 @@
   export let width: number = 800;
   export let height: number = 600;
   export let theme: any;
-
+  export let symbolName: string;
   
 </script>
 
@@ -22,6 +22,7 @@
 
 
 <div class="chart-container">
+  <h2 style="color:white;">{symbolName}</h2>
   <Chart {width} {height} {...theme.chart}  >
     <LineSeries data={graphData} reactive={true} color={'silver'}/>
   </Chart>
