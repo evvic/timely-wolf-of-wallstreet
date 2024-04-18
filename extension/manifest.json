@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "name": "Janka Finance",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Opens a new tab to a specific webpage once every 24 hours or when the extension icon is clicked",
-  "permissions": ["alarms", "tabs"],
+  "permissions": ["alarms"],
   "action": {
     "default_popup": ""
   },
