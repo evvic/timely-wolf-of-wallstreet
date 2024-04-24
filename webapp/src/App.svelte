@@ -13,6 +13,7 @@
   let gainerPercentage = 0;
   let loserPercentage = 0;
 
+
   // Define the theme object here
   const graphTheme = {
     chart: {
@@ -37,6 +38,7 @@
         },
         horzLines: {
           color: "#363C4E",
+
         },
       },
     },
@@ -44,6 +46,7 @@
       topColor: "rgba(32, 226, 47, 0.56)",
       bottomColor: "rgba(32, 226, 47, 0.04)",
       lineColor: "rgba(32, 226, 47, 1)",
+
     },
   };
 
@@ -64,6 +67,7 @@
   async function fetchData() {
     graphData = [];
     graphSymbols = [];
+
     for (let i = 0; i < trackedSymbols.length; i++) {
       await fetch(
         `https://65f7764db2fafbd9238d.appwrite.global/stocks?symbol=${trackedSymbols[i]}&timeseries=${timeseries}&offset=1`,
@@ -117,6 +121,7 @@
   let isDropdownOpen = false;
   let isDropdownOpenPolitician = false;
 
+
   const handleDropdownClick = () => {
     isDropdownOpen = !isDropdownOpen;
   };
@@ -154,6 +159,7 @@
       return;
     isDropdownOpenPolitician = false;
   };
+
 </script>
 
 <main class="h-dvh w-screen bg-neutral-900 overflow-y-scroll">
@@ -188,6 +194,7 @@
             </div>
           {:else}
             <div class=" w-28 bg-slate-500 rounded-xl p-2 font-bold text-white">
+
               <p>{timeseries}🔽</p>
             </div>
           {/if}
@@ -199,6 +206,7 @@
           <li class="hover:bg-slate-800 w-full text-center">
             <button
               class=" text-white p-1 w-full"
+
               on:click={() => (timeseries = "DAILY")}
               on:click={handleDropdownClick}>DAILY</button
             >
@@ -206,6 +214,7 @@
           <li class="hover:bg-slate-800 w-full">
             <button
               class=" text-white p-1 w-full"
+
               on:click={() => (timeseries = "WEEKLY")}
               on:click={handleDropdownClick}>WEEKLY</button
             >
@@ -213,6 +222,7 @@
           <li class="hover:bg-slate-800 w-full">
             <button
               class=" text-white p-1 w-full"
+
               on:click={() => (timeseries = "MONTHLY")}
               on:click={handleDropdownClick}>MONTHLY</button
             >
@@ -237,6 +247,7 @@
   </div>
 
   <div>
+
     {#key timeseries}
       {#await fetchData()}
         <div class="flex flex-col items-center text-white">
@@ -269,6 +280,7 @@
                 )}
               />
             </div>
+
           {/each}
         </div>
       {/await}
@@ -366,6 +378,7 @@
       </table>
     </div>
   </div>
+
 </main>
 
 <style lang="postcss">
