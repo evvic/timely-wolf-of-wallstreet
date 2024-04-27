@@ -5,7 +5,7 @@
   "description": "Opens a new tab to a specific webpage once every 24 hours or when the extension icon is clicked",
   "permissions": ["alarms"],
   "action": {
-    "default_popup": ""
+    "default_popup": "popup.html"
   },
   "background": {
     "service_worker": "background.js"

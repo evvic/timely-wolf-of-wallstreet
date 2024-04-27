@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popup</title>
+    <style>
+        /* Reset default margin and padding */
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Add rounded edges to the popup window */
+        body {
+            border-radius: 20px;
+            overflow: hidden;
+            background-color: #f0f0f0; /* Add a light background color */
+        }
+
+        /* Add some basic styling for the navbar */
+        nav {
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            padding-right: 10px;
+            width: 300px; /* Set a fixed width for the navbar */
+        }
+
+        /* Style the icon */
+        nav .icon {
+            width: 64px;
+            height: 64px;
+        }
+
+        /* Style the main text */
+        nav .main-text {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            white-space: nowrap;
+            margin: 0;
+            padding-left: 10px;
+            color: #000;
+            font-size: 24px;
+        }
+
+        /* Style the sub-text */
+        nav .sub-text {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            white-space: nowrap;
+            margin: 0;
+            padding-left: 10px;
+            color: #888;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <img class="icon" src="icons/clb.png" alt="Icon">
+        <div>
+            <h2 class="main-text">Janka Finance</h2>
+            <span class="sub-text">Jankalites LLC</span>
+        </div>
+    </nav>
+
+    <!-- Your popup content goes here -->
+    <div>
+        <h1>Welcome to Janka Finance</h1>
+        <p>This is a basic popup for a Chrome extension.</p>
+    </div>
+</body>
+</html>
