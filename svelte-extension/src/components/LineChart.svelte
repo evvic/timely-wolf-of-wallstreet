@@ -8,24 +8,38 @@
     // import Axis from "./Chart/Axis-naive.svelte";
     import Axis from "./Chart/Axis.svelte";
     import Gradient from "./Chart/Gradient.svelte";
-    import { getUniqueId } from "./Chart/utils";
+    import { getUniqueId, formatPrice } from "./Chart/utils";
   
-    const formatDate = d3.timeFormat("%-b %-d");
-    const gradientColors = ["rgb(226, 222, 243)", "#f8f9fa"];
+    const formatDate = d3.timeFormat("%-b %-d %Y");
+    //const _formatPrice = formatPrice;
+    const gradientColors = ["white", "black"];
     const gradientId = getUniqueId("Timeline-gradient");
   
     export let data = [];
     export let xAccessor = d => d.x;
     export let yAccessor = d => d.y;
-    export let label;
-    export let width = 350;
-    export let height = 300;
+    // export let label;
+    export let width = undefined
+    export let height = undefined
+
+    // const tooltip = d3.select("body")
+    //     .append("div")
+    //     .attr("class", "tooltip")
+
+    // const circle = svg.append("circle")
+    //     .attr("r", 0)
+    //     .attr("fill", "steelblue")
+    //     .style("stroke", "white")
+    //     .attr("opacity", .70)
+    //     .style("pointer-events", "none")
+
+
   
     const margins = {
-        marginTop: 40,
-        marginRight: 15,
-        marginBottom: 40,
-        marginLeft: 70
+        marginTop: 15,
+        marginRight: 0,
+        marginBottom: 0,
+        marginLeft: 0
     };
     $: dms = {
         width,
@@ -44,18 +58,19 @@
     $: xScale = d3.scaleTime()
         .domain(d3.extent(data, xAccessor))
         .range([0, dms.boundedWidth]);
+        //.style("color", "white");
   
     $: yScale = d3.scaleLinear()
         .domain(d3.extent(data, yAccessor))
         .range([dms.boundedHeight, 0])
         .nice();
-  
+
     $: xAccessorScaled = d => xScale(xAccessor(d));
     $: yAccessorScaled = d => yScale(yAccessor(d));
     $: y0AccessorScaled = yScale(yScale.domain()[0]);
 </script>
   
-<div class="Timeline placeholder" bind:clientWidth={width} bind:clientHeight={height}>
+<div class="Timeline placeholder max-w-lg max-h-lg " bind:clientWidth={width} bind:clientHeight={height}>
     <Chart dimensions={dms}>
         <defs>
             <Gradient
@@ -73,7 +88,7 @@
         <Axis
             dimension="y"
             scale={yScale}
-            label={label}
+            formatTick={formatPrice}
         />
         <Line
             type="area"
@@ -81,7 +96,7 @@
             xAccessor={xAccessorScaled}
             yAccessor={yAccessorScaled}
             y0Accessor={y0AccessorScaled}
-            style="fill: url(#{gradientId})"
+            
         />
         <Line
             data={data}
@@ -93,10 +108,11 @@
   
 <style>
     .Timeline {
-        height: 300px;
-        min-width: 500px;
-        width: calc(100% + 1em);
-        margin-bottom: 2em;
+        /* height: 250px; */
+        min-width: 300px;
+        /*width: calc(100% + 1em); */
+        /* max-width: 400px; */
+        margin-bottom: 1em;
     }
 </style>
   

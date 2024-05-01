@@ -36,13 +36,14 @@
   
     .Line--type-line {
       fill: none;
-      stroke: #9980fa;
-      stroke-width: 3px;
+      /* stroke: #9980fa; */
+      stroke: white;
+      stroke-width: 2px;
       stroke-linecap: round;
     }
   
     .Line--type-area {
-      fill: rgba(152, 128, 250, 0.185);
+      fill: rgba(202, 193, 237, 0.102);
       stroke-width: 0;
     }
   </style>

@@ -6,9 +6,9 @@
     import { onMount, onDestroy } from 'svelte';
    
     const time_windows = [
-        { value: "3", label: "3 months" },
-        { value: "6", label: "6 months" },
-        { value: "12", label: "1 year" }
+        { value: "12", label: "3 months" },
+        { value: "26", label: "6 months" },
+        { value: "52", label: "1 year" }
     ];
 
     let cnt = 0;
@@ -31,10 +31,12 @@
      */
     function handleClick(time_window) {
         cnt++;
+
+        chrome.storage.local.set({ num_weeks: time_window.value });
+        chrome.storage.local.set({ selector_label: time_window.label });
+
         window = time_window.value;
         label = time_window.label;
-        chrome.storage.local.set({ num_weeks: window });
-        chrome.storage.local.set({ selector_label: label });
     }
 
 </script>
@@ -56,4 +58,3 @@
     </Select.Content>
     <Select.Input name="time_windows" bind:value={window} placeholder={label}/>
 </Select.Root>
-<p>select {label} cnt {cnt} </p>

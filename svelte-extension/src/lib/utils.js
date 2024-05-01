@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { cubicOut } from "svelte/easing";
@@ -46,3 +47,16 @@ export const flyAndScale = (
 		easing: cubicOut
 	};
 };
+
+export const isValidStockSymbol = (str) => {
+	// Check if the string is empty or undefined
+	if (!str) {
+	  return false;
+	}
+  
+	// Regular expression to match valid stock symbol format
+	const regex = /^[A-Z][A-Z0-9]{1,4}$/;
+  
+	// Return true if the string matches the regex, false otherwise
+	return regex.test(str);
+  }

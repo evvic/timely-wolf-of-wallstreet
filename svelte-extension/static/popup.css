@@ -4,16 +4,18 @@ html, body {
 }
 
 /* body {
-    width: 18rem;
-    height: 20rem;
+    width: 28rem;
+    height: 30rem;
 } */
 
 /* Add rounded edges to the popup window */
 body {
     border-radius: 20px;
     overflow: hidden;
-    background-color: antiquewhite;
+    /* background-color: black; */
 }
+
+
 
 
 @font-face {
@@ -28,6 +30,11 @@ body {
     font-family: "Outfit";
     font-style: normal;
     font-weight: 400
+}
+
+text {
+    color: aliceblue;
+    font-family: "Outfit", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 /* Add some basic styling for the navbar */
@@ -67,8 +74,8 @@ nav .sub-text {
 .container {
     display: flex;
     justify-content: space-between; /* Items will be spaced evenly */
-    align-items: center; /* Align items vertically */
-    width: calc(100vw - 2rem); /* Match body width of the popup window */
+    align-items: normal; /* Align items vertically */
+    /*width: calc(100vw - 2rem);  Match body width of the popup window */
 }
 /* Style for the search bar */
 .search-bar {

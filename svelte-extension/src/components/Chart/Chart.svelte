@@ -8,17 +8,17 @@
   
     let currentDimensions = writable(dimensions)
     $: {
-      currentDimensions.set(dimensions)
+        currentDimensions.set(dimensions)
     }
     setContext("Chart", {
-      dimensions: currentDimensions
+        dimensions: currentDimensions
     });
   
-  </script>
-  
-  <svg class="Chart" width={dimensions.width} height={dimensions.height}>
+</script>
+
+<svg class="Chart" width={dimensions.width} height={dimensions.height}>
     <g transform={`translate(${dimensions.marginLeft}, ${dimensions.marginTop})`}>
-      <slot />
+        <slot />
     </g>
-  </svg>
+</svg>
   

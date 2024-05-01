@@ -1,13 +1,15 @@
 <script>
 // @ts-nocheck
 
-    import { getContext } from "svelte";
+    import { onMount, getContext } from "svelte";
     import * as d3 from "d3";
   
     export let dimension = "x";
     export let scale = null;
     export let label;
     export let formatTick = d3.format(",");
+
+    let textSelection;
   
     const { dimensions: dimensionsStore } = getContext("Chart");
     $: dimensions = $dimensionsStore;
@@ -20,9 +22,17 @@
         : dimensions.boundedHeight / 70;
   
     $: ticks = scale.ticks(numberOfTicks);
+
+    function setTextColorWhite() {
+        textSelection = d3.selectAll('text');
+        textSelection.style('fill', 'white');
+    }
+
+    onMount(setTextColorWhite);
+
   </script>
   
-  <g
+<g
     class="Axis Axis--dimension-{dimension}"
     transform={`translate(0, ${dimension == "x" ? dimensions.boundedHeight : 0})`}>
     <line
@@ -32,13 +42,13 @@
     />
   
     {#each ticks as tick, i}
-      <text class="Axis__tick" transform={`translate(${(
-        dimension == "x"
-          ? [scale(tick), 25]
-          : [-16, scale(tick)]
-        ).join(", ")})`}>
-        {formatTick(tick)}
-      </text>
+        <text class="text-white !important" transform={`translate(${(
+            dimension == "x"
+            ? [scale(tick), 25]
+            : [-16, scale(tick)]
+            ).join(", ")})`}>   
+            {formatTick(tick)}
+        </text>
     {/each}
   
     {#if label}
@@ -65,20 +75,25 @@
       text-anchor: middle;
       font-size: 0.8em;
       letter-spacing: 0.01em;
+      color: white;
     }
   
     .Axis__tick {
       font-size: 0.9em;
+      font-weight: bold;
+      color: white;
       transition: all 0.3s ease-out;
     }
   
     .Axis--dimension-x .Axis__tick {
       text-anchor: middle;
+      color: blue;
     }
   
     .Axis--dimension-y .Axis__tick {
       dominant-baseline: middle;
       text-anchor: end;
+      color: orange;
     }
   </style>
   
