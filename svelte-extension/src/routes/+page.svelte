@@ -119,15 +119,15 @@
         <!-- {#each data as number}
             <p>{number}</p>
         {/each} -->
-        <p>num_weeks: {num_weeks} {test}</p>    
+        <!-- <p>num_weeks: {num_weeks} {test}</p>     -->
         <div class="flex items-center py-4">
             <h2 class="scroll-m-20 text-2xl font-semibold tracking-tight pr-2">
                 $450.69
             </h2>
             <Badge class="font-weight-bold">+30%</Badge>
         </div>
-        <Card.Root class="max-w-lg max-h-lg m-0">
-            <Card.Content class="p-1">
+        <Card.Root class="max-w-lg max-h-lg m-0 overflow-hidden">
+            <Card.Content class="p-0">
                 <LineChart 
                     data={data} 
                     xAccessor={dateAccessor} 

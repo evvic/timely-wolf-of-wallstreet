@@ -44,8 +44,8 @@
     {#each ticks as tick, i}
         <text class="text-white !important" transform={`translate(${(
             dimension == "x"
-            ? [scale(tick), 25]
-            : [-16, scale(tick)]
+            ? [scale(tick), -5]
+            : [5, scale(tick) - 3]
             ).join(", ")})`}>   
             {formatTick(tick)}
         </text>

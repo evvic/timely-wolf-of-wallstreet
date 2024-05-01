@@ -112,7 +112,7 @@
         min-width: 300px;
         /*width: calc(100% + 1em); */
         /* max-width: 400px; */
-        margin-bottom: 1em;
+        /* margin-bottom: 1em; */
     }
 </style>
   
