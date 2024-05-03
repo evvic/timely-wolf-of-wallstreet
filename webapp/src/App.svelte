@@ -5,6 +5,13 @@
   import Ferdous from "./components/Ferdous.svelte";
 
   let timeseries = "WEEKLY";
+  let graphDataLength = 12;
+
+  const lengthMap = new Map()
+  lengthMap.set(12, '3 Months')
+  lengthMap.set(26, '6 Months')
+  lengthMap.set(52, '1 Year')
+
   let trackedMockPolitician = "Nancy Pelosi";
 
   let graphData: { time: string; value: number; symbol: string }[] = [];
@@ -164,7 +171,7 @@
 
     for (let i = 0; i < trackedSymbols.length; i++) {
       await fetch(
-        `https://65f7764db2fafbd9238d.appwrite.global/stocks?symbol=${trackedSymbols[i]}&timeseries=${timeseries}&offset=1`,
+        `https://65f7764db2fafbd9238d.appwrite.global/stocks?symbol=${trackedSymbols[i]}&timeseries=WEEKLY&length=${graphDataLength}&offset=1`,
       )
         .then((response) => response.json())
         .then((data) => {
@@ -254,7 +261,7 @@
   };
 </script>
 
-<main class="h-dvh w-screen bg-neutral-900 overflow-y-scroll">
+<main class="main h-dvh w-screen bg-neutral-900 overflow-y-scroll">
   <div class="flex-col text-center mb-2">
     <h1
       class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
@@ -268,9 +275,9 @@
           {#each mockPoliticianData as item}
             <li class="text-white font-bold">
               {#if item.type == "BUY"}
-                <p class="text-emerald-700">{item.type} {item.symbol}</p>
+                <p class="text-emerald-700 text-lg">{item.type} {item.symbol}</p>
               {:else}
-                <p class="text-red-700">{item.type} {item.symbol}</p>
+                <p class="text-red-700 text-lg">{item.type} {item.symbol}</p>
               {/if}
 
               <p>$ {item.amount}</p>
@@ -286,10 +293,10 @@
       <div class="max-w-md rounded-xl overflow-hidden shadow-lg bg-green-900">
         <div class="px-2 py-4">
           <div class="font-extrabold text-xl mb-2">
-            The {timeseries} Gainer 💪
+            The {lengthMap.get(graphDataLength)} Gainer 💪
           </div>
           <p class="text-black text-base font-bold">
-            The {timeseries} gainer is {gainer} with a growth of {gainerPercentage}%
+            The {lengthMap.get(graphDataLength)} gainer is {gainer} with a growth of {gainerPercentage}%
           </p>
           <p class="text-black text-base">
             “Happiness is not in the mere possession of money; it lies in the
@@ -305,11 +312,11 @@
         <button class="btn m-1" on:click={handleDropdownClick}>
           {#if isDropdownOpen}
             <div class=" w-28 bg-slate-500 rounded-xl p-2 font-bold text-white">
-              <p>{timeseries}🔼</p>
+              <p>{lengthMap.get(graphDataLength)}🔼</p>
             </div>
           {:else}
             <div class=" w-28 bg-slate-500 rounded-xl p-2 font-bold text-white">
-              <p>{timeseries}🔽</p>
+              <p>{lengthMap.get(graphDataLength)}🔽</p>
             </div>
           {/if}
         </button>
@@ -320,20 +327,20 @@
           <li class="hover:bg-slate-800 w-full text-center">
             <button
               class=" text-white p-1 w-full"
-              on:click={() => (timeseries = "DAILY")}
-              on:click={handleDropdownClick}>DAILY</button
+              on:click={() => graphDataLength = 12}
+              on:click={handleDropdownClick}>3 Months</button
             >
           </li>
           <li class="hover:bg-slate-800 w-full">
             <button
-              class="btn text-white p-1 w-full text-left"
-              on:click={() => timeseries = "WEEKLY"} on:click={handleDropdownClick}>WEEKLY</button
+              class="btn text-white p-1 w-full"
+              on:click={() => graphDataLength = 26} on:click={handleDropdownClick}>6 Months</button
             >
           </li>
           <li class="hover:bg-slate-800 w-full">
             <button
-              class="btn text-white p-1 w-full text-left"
-              on:click={() => timeseries = "MONTHLY"} on:click={handleDropdownClick}>MONTHLY</button
+              class="btn text-white p-1 w-full"
+              on:click={() => graphDataLength = 52} on:click={handleDropdownClick}>1 Year</button
             >
           </li>
         </ul>
@@ -341,10 +348,10 @@
       <div class="max-w-md rounded-xl overflow-hidden shadow-lg bg-red-900">
         <div class="px-6 py-4">
           <div class="font-extrabold text-xl mb-2">
-            The {timeseries} Loser 👋🏼
+            The {lengthMap.get(graphDataLength)} Loser 👋🏼
           </div>
           <p class="text-black text-base font-bold">
-            The {timeseries} loser is TESLA with a loss of {loserPercentage}%
+            The {lengthMap.get(graphDataLength)} loser is TESLA with a loss of {loserPercentage}%
           </p>
           <p class="text-black text-base">
             “Wealth consists not in having great possessions, but in having few
@@ -356,7 +363,7 @@
   </div>
 
   <div>
-    {#key timeseries}
+    {#key graphDataLength}
       {#await fetchData()}
         <div class="flex flex-col items-center text-white">
           <p>Loading...</p>
@@ -493,6 +500,10 @@
 </main>
 
 <style>
+  .main{
+    font-family: "Outfit", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
   .slider {
     max-width: 900px;
   }
@@ -533,6 +544,22 @@
   animation-play-state: paused;
 }
 
+@font-face {
+    src: url(https://fonts.gstatic.com/s/outfit/v4/QGYyz_MVcBeNP4NjuGObqx1XmO1I4deyC4G-EiAou6Y.ttf);
+    font-family: "Outfit";
+    font-style: normal;
+    font-weight: 700
+}
+
+@font-face {
+    src: url(https://fonts.gstatic.com/s/outfit/v4/QGYyz_MVcBeNP4NjuGObqx1XmO1I4TC1C4G-EiAou6Y.ttf);
+    font-family: "Outfit";
+    font-style: normal;
+    font-weight: 400
+}
+
+
+/* Options below to make infinte scroll dynamic speed and direction*/
   /* .slider[data-direction="right"] {
   --_animation-direction: reverse;
 }
@@ -555,8 +582,6 @@
     }
   }
 
-  /* general styles */
-
   :root {
     --clr-neutral-100: hsl(0, 0%, 100%);
     --clr-primary-100: hsl(205, 15%, 58%);
@@ -564,19 +589,6 @@
     --clr-primary-800: hsl(217, 33%, 17%);
     --clr-primary-900: hsl(218, 33%, 9%);
   }
-
-  /* html {
-  color-scheme: dark;
-}
-
-body {
-  display: grid;
-  min-block-size: 100vh;
-  place-content: center;
-  font-family: system-ui;
-  font-size: 1.125rem;
-  background-color: var(--clr-primary-800);
-} */
 
   .tag-list {
     margin: 0;
