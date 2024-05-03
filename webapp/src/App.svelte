@@ -117,8 +117,6 @@
     },
   ];
 
-  const sections = ["nancy", "bill", "yoiink"];
-
   function getPercentChange(first: number, last: number): string {
     let dif = last - first;
     let avg = (first + last) / 2;
