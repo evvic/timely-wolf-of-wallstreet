@@ -529,6 +529,10 @@
       var(--_animation-direction, forwards) linear infinite;
   }
 
+  .slider[data-animated="true"] .slider__inner:hover {
+  animation-play-state: paused;
+}
+
   /* .slider[data-direction="right"] {
   --_animation-direction: reverse;
 }
