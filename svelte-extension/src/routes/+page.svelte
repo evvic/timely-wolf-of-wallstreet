@@ -9,7 +9,7 @@
     import LineChart from '../components/LineChart.svelte';
     import { onMount, onDestroy } from 'svelte';
     import * as d3 from "d3";
-    import { isValidStockSymbol, queryStockData } from "../lib/utils"
+    import { isValidStockSymbol, queryStockData, calculatePercentChange } from "../lib/utils"
     
 
     let counter = 0;
@@ -121,7 +121,8 @@
         ];
 
         current_price = tempStockData.slice(-1)[0]["price"];
-        percent_change = "-40"
+        let past_price = tempStockData[0]["price"];
+        percent_change = calculatePercentChange(current_price, past_price)
 
         data = tempStockData.map(obj => ({
             date: new Date(obj.date),
@@ -176,43 +177,34 @@
     </nav>
     <div class="chart-container m-4">
         <div class="container px-0">
-            <!-- Search bar -->
+            <!-- Symbol CombBox -->
             <ComboBox bind:symbol={symbol} on:change={saveToChromeStorage} />
-            <!-- <Input type="symbol" placeholder="SYMBOL" class={"w-20 uppercase font-weight-bold border-red-500"} bind:value={symbol} on:change={saveToChromeStorage} /> -->
-            <!-- <Input type="symbol" placeholder="SYMBOL" class={"w-20 uppercase font-weight-bold" + symbol_error_status === true ? "border-red-500" : ""} bind:value={symbol} on:change={saveToChromeStorage} /> -->
-            <!-- Dropdown -->
+            <!-- Time Window Dropdown -->
             <Select bind:window={num_weeks} />
         </div>
-        <!-- <button id="update-chart-btn" on:click={saveToChromeStorage}>Update Chart {counter}  {symbol || '(enter symbol)'}</button> -->
-        <!-- <div>
-            <canvas id="myChart"></canvas>
-        </div> -->
-        <!-- {#each data as number}
-            <p>{number}</p>
-        {/each} -->
-        <!-- <p>num_weeks: {num_weeks} {test}</p>     -->
-        <p>{test}</p>
+        <!-- <p>{test}</p> -->
         <div class="flex items-center py-4">
             <h2 class="scroll-m-20 text-2xl font-semibold tracking-tight pr-2">
                 ${current_price? current_price : "-"}
             </h2>
             <Badge class="font-weight-bold">{percent_change? percent_change : "- "}%</Badge>
         </div>
-        <Card.Root class="max-w-lg max-h-lg m-0 overflow-hidden">
+        <Card.Root class="max-w-lg max-h-lg m-0 overflow-hidden relative">
             <Card.Content class="p-0">
+                <LineChart 
+                    data={data} 
+                    xAccessor={dateAccessor} 
+                    yAccessor={priceAccessor} 
+                    label={symbol}
+                    width={325}
+                    height={325}
+                />
                 {#if loading}
-                    <div class="w-325 h-325 flex justify-center items-center">
-                        <Jellyfish size="60" color="#FFFFFF" unit="px" />
+                <div class="absolute inset-0 flex items-center justify-center bg-background bg-opacity-50">
+                    <div class="flex justify-center items-center">
+                      <Jellyfish size="60" color="#FFFFFF" unit="px" />
                     </div>
-                {:else}
-                    <LineChart 
-                        data={data} 
-                        xAccessor={dateAccessor} 
-                        yAccessor={priceAccessor} 
-                        label={symbol}
-                        width={325}
-                        height={325}
-                    />
+                </div>
                 {/if}
             </Card.Content>
         </Card.Root>

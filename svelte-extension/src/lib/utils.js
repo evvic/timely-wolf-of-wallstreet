@@ -86,4 +86,9 @@ export const queryStockData = async (symbol, length, timeseries="WEEKLY") => {
 		console.error("Error retrieving stock data:", error);
 		return []; // Return an empty array on error
 	}
-  }
+}
+
+export function calculatePercentChange(currentPrice, pastPrice) {
+	const percentChange = ((currentPrice - pastPrice) / pastPrice) * 100;
+	return percentChange.toFixed(2); // Round the result to 2 decimal places
+}
