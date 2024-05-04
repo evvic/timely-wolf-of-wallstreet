@@ -20,6 +20,7 @@
     "postcss-load-config": "^5.0.2",
     "svelte": "^4.2.7",
     "svelte-check": "^3.6.0",
+    "svelte-loading-spinners": "^0.3.6",
     "sveltekit-adapter-chrome-extension": "^2.0.1",
     "tailwindcss": "^3.3.6",
     "typescript": "^5.0.0",
@@ -27,8 +28,9 @@
   },
   "type": "module",
   "dependencies": {
-    "bits-ui": "^0.21.5",
+    "bits-ui": "^0.21.7",
     "clsx": "^2.1.1",
+    "cmdk-sv": "^0.0.17",
     "d3": "^7.9.0",
     "lucide-svelte": "^0.376.1",
     "tailwind-merge": "^2.3.0",

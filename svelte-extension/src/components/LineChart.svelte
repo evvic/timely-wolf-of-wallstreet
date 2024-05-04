@@ -9,6 +9,7 @@
     import Axis from "./Chart/Axis.svelte";
     import Gradient from "./Chart/Gradient.svelte";
     import { getUniqueId, formatPrice } from "./Chart/utils";
+    import { onMount } from 'svelte';
   
     const formatDate = d3.timeFormat("%-b %-d %Y");
     //const _formatPrice = formatPrice;
@@ -34,6 +35,10 @@
     //     .style("pointer-events", "none")
 
 
+    // $: data = data.map(obj => ({
+    //     date: new Date(obj.date),
+    //     price: obj.price,
+    // }));
   
     const margins = {
         marginTop: 15,

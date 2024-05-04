@@ -15,6 +15,7 @@
     let label = undefined;
 
     export let window = undefined;
+    //export let on:change;
 
     $: window = window;
 

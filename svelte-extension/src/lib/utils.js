@@ -59,4 +59,31 @@ export const isValidStockSymbol = (str) => {
   
 	// Return true if the string matches the regex, false otherwise
 	return regex.test(str);
+}
+
+export const queryStockData = async (symbol, length, timeseries="WEEKLY") => {
+	const base_url = "https://65f7764db2fafbd9238d.appwrite.global"
+
+	try {
+
+		// Replace 'your_api_url' with the actual URL for your stock data API
+		const response = await fetch(`${base_url}/stocks?symbol=${symbol}&timeseries=${timeseries}&length=${length}`);
+
+		console.log(response)
+	
+		if (!response.ok) {
+			throw new Error(`Error fetching data: ${response.status} ${symbol}`);
+		}
+	
+		const data = await response.json();
+		
+		if (data.error) {
+			throw new Error(data.error);
+		}
+	
+		return data.documents;
+	} catch (error) {
+		console.error("Error retrieving stock data:", error);
+		return []; // Return an empty array on error
+	}
   }
