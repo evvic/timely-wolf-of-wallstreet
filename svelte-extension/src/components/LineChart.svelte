@@ -23,23 +23,7 @@
     export let width = undefined
     export let height = undefined
 
-    // const tooltip = d3.select("body")
-    //     .append("div")
-    //     .attr("class", "tooltip")
 
-    // const circle = svg.append("circle")
-    //     .attr("r", 0)
-    //     .attr("fill", "steelblue")
-    //     .style("stroke", "white")
-    //     .attr("opacity", .70)
-    //     .style("pointer-events", "none")
-
-
-    // $: data = data.map(obj => ({
-    //     date: new Date(obj.date),
-    //     price: obj.price,
-    // }));
-  
     const margins = {
         marginTop: 15,
         marginRight: 0,

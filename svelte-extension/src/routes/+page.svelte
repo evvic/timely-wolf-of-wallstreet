@@ -1,17 +1,14 @@
 <script lang="js">
 // @ts-nocheck
-    import { Input } from "$lib/components/ui/input/index.js";
     import { Badge } from "$lib/components/ui/badge/index.js";
     import { Jellyfish } from 'svelte-loading-spinners';
     import * as Card from "$lib/components/ui/card/index.js";
     import Select from '../components/select.svelte'
     import ComboBox from '../components/combobox.svelte'
     import LineChart from '../components/LineChart.svelte';
-    import { onMount, onDestroy } from 'svelte';
-    import * as d3 from "d3";
+    import { onMount } from 'svelte';
     import { isValidStockSymbol, queryStockData, calculatePercentChange } from "../lib/utils"
     
-
     let counter = 0;
     let symbol = "";
     let num_weeks = undefined;
@@ -22,13 +19,6 @@
 
     let test = "what"
 
-    const borderVariants = {
-        "normal": "",
-        "error": "border-red-500"
-    }
-
-    const parseDate = d3.timeParse("%m/%d/%Y");
-    //const dateAccessor = d => parseDate(d.date);
     const dateAccessor = d => d.date;
     const priceAccessor = d => d.price;
 
@@ -42,8 +32,6 @@
             symbol = sym ? sym.toUpperCase() : symbol;
             num_weeks = nwks ? nwks : num_weeks;
         });
-        
-    
     })
 
     // reactive statement to trigger updateData when symbol or num_weeks changes
@@ -54,23 +42,13 @@
     function getData(sym, nweeks) {
         updateData(sym, nweeks);
     }
-    
-    
 
     async function updateData(symbol, num_weeks) {
-        // Your function logic using symbol and num_weeks
-        //console.log("Symbol:", symbol, "Num Weeks:", num_weeks);
 
-        // @ts-ignore
-        //chrome.storage.local.set({ counter: counter });
-
-        // @ts-ignore
-        //chrome.storage.local.set({ symbol: symbol });
-
-        // save data to lcaol vars
-        let temp_current_price = current_price
-        let temp_percent_change = percent_change
-        let temp_data = data
+        // save data to local vars
+        const temp_current_price = current_price
+        const temp_percent_change = percent_change
+        const temp_data = data
 
         counter++;
         loading = true;
@@ -107,21 +85,8 @@
             return;
         }
 
-        // FORMAT DATA
-
-        // API call would get the data here
-        const fakedata = [
-            { date: new Date(2023, 9, 15), price: 40 },
-            { date: new Date(2023, 10, 1), price: 100 },
-            { date: new Date(2023, 10, 15), price: 60 },
-            { date: new Date(2023, 11, 1), price: 100 },
-            { date: new Date(2023, 11, 15), price: 120 },
-            { date: new Date(2024, 0, 1), price: 115 },
-            // Add more data points...
-        ];
-
         current_price = tempStockData.slice(-1)[0]["price"];
-        let past_price = tempStockData[0]["price"];
+        const past_price = tempStockData[0]["price"];
         percent_change = calculatePercentChange(current_price, past_price)
 
         data = tempStockData.map(obj => ({
@@ -134,31 +99,12 @@
         loading = false;
     }
 
-
     function saveToChromeStorage() {
         // Increment the counter
         counter++;
 
-        // Store the counter value in storage
-        // @ts-ignore
         chrome.storage.local.set({ counter: counter });
-        // @ts-ignore
         chrome.storage.local.set({ symbol: symbol });
-        // @ts-ignore
-        //chrome.storage.local.set({ num_weeks: num_weeks });
-
-        // API call would get the data here
-        const fakedata = [
-            { date: new Date(2023, 9, 15), price: 40 },
-            { date: new Date(2023, 10, 1), price: 100 },
-            { date: new Date(2023, 10, 15), price: 60 },
-            { date: new Date(2023, 11, 1), price: 100 },
-            { date: new Date(2023, 11, 15), price: 120 },
-            { date: new Date(2024, 0, 1), price: 115 },
-            // Add more data points...
-        ];
-
-        //data = fakedata
     }
 
 </script>
@@ -211,10 +157,3 @@
         
     </div>
 </div>
-
-<style>
-    /* .divbody {
-        max-width: 400px;
-        height: 400px;
-    } */
-</style>
