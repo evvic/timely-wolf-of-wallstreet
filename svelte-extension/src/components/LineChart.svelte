@@ -11,7 +11,7 @@
     import { getUniqueId, formatPrice } from "./Chart/utils";
     import { onMount } from 'svelte';
   
-    const formatDate = d3.timeFormat("%-b %-d %Y");
+    const formatDate = d3.timeFormat("%-b %Y");
     //const _formatPrice = formatPrice;
     const gradientColors = ["white", "black"];
     const gradientId = getUniqueId("Timeline-gradient");

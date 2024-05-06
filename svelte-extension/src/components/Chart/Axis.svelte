@@ -26,6 +26,10 @@
     function setTextColorWhite() {
         textSelection = d3.selectAll('text');
         textSelection.style('fill', 'white');
+
+        d3.select(`.Axis--dimension-${dimension}`)
+            .selectAll('text')
+            .style('fill', 'white');
     }
 
     onMount(setTextColorWhite);
@@ -33,7 +37,7 @@
   </script>
   
 <g
-    class="Axis Axis--dimension-{dimension}"
+    class="text-white Axis Axis--dimension-{dimension}"
     transform={`translate(0, ${dimension == "x" ? dimensions.boundedHeight : 0})`}>
     <line
       class="Axis__line"
@@ -42,7 +46,7 @@
     />
   
     {#each ticks as tick, i}
-        <text class="text-white !important" transform={`translate(${(
+        <text class="Axis__tick text-white" transform={`translate(${(
             dimension == "x"
             ? [scale(tick), -5]
             : [5, scale(tick) - 3]
@@ -60,7 +64,8 @@
             : [-56, dimensions.boundedHeight / 2]
         ).map(d => d + "px").join(", ")}) {
           dimension == "y" ? "rotate(-90deg)" : ""
-        }">
+        }
+        t">
         {label}
       </text>
     {/if}
@@ -69,6 +74,7 @@
   <style>
     .Axis__line {
       stroke: #bdc3c7;
+      color: white;
     }
   
     .Axis__label {
@@ -82,10 +88,11 @@
       font-size: 0.9em;
       font-weight: bold;
       color: white;
+      fill: white;
       transition: all 0.3s ease-out;
     }
   
-    .Axis--dimension-x .Axis__tick {
+    /* .Axis--dimension-x .Axis__tick {
       text-anchor: middle;
       color: blue;
     }
@@ -94,6 +101,6 @@
       dominant-baseline: middle;
       text-anchor: end;
       color: orange;
-    }
+    } */
   </style>
   
