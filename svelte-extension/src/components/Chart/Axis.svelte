@@ -1,15 +1,13 @@
 <script>
 // @ts-nocheck
 
-    import { onMount, getContext } from "svelte";
+    import {  getContext } from "svelte";
     import * as d3 from "d3";
   
     export let dimension = "x";
     export let scale = null;
     export let label;
     export let formatTick = d3.format(",");
-
-    let textSelection;
   
     const { dimensions: dimensionsStore } = getContext("Chart");
     $: dimensions = $dimensionsStore;
@@ -22,17 +20,6 @@
         : dimensions.boundedHeight / 70;
   
     $: ticks = scale.ticks(numberOfTicks);
-
-    function setTextColorWhite() {
-        textSelection = d3.selectAll('text');
-        textSelection.style('fill', 'white');
-
-        d3.select(`.Axis--dimension-${dimension}`)
-            .selectAll('text')
-            .style('fill', 'white');
-    }
-
-    onMount(setTextColorWhite);
 
   </script>
   
