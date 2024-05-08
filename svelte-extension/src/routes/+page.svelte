@@ -9,26 +9,25 @@
     import { onMount } from 'svelte';
     import { isValidStockSymbol, queryStockData, calculatePercentChange } from "../lib/utils"
     
-    let counter = 0;
+    //let counter = 0;
     let symbol = "";
     let num_weeks = undefined;
     let data = [];
     let current_price = undefined;
     let percent_change = undefined;
-    let loading = true;
-
-    let test = "what"
+    let loading = false;
+    let error_state = false;
 
     const dateAccessor = d => d.date;
     const priceAccessor = d => d.price;
 
     onMount(() => {
         chrome.storage.local.get(["counter", "symbol", "num_weeks"], (data) => {
-            const cnt = data["counter"];
+            //const cnt = data["counter"];
             const sym = data["symbol"];
             const nwks = data["num_weeks"];
 
-            counter = cnt ? cnt : counter;
+            //counter = cnt ? cnt : counter;
             symbol = sym ? sym.toUpperCase() : symbol;
             num_weeks = nwks ? nwks : num_weeks;
         });
@@ -50,23 +49,26 @@
         const temp_percent_change = percent_change
         const temp_data = data
 
-        counter++;
+        //counter++;
         loading = true;
+        error_state = false;
 
         if (!num_weeks || num_weeks <= 0) {
             data = [];
             current_price = undefined;
             percent_change = undefined;
+            error_state = true;
             return;
         }
 
         if (isValidStockSymbol(symbol.toUpperCase())) {
-            test = "STOCK SYMBOL IS VALID"
+            console.log("STOCK SYMBOL IS VALID")
         } else {
-            test = "STOCK SYMBOL IS INVALID";
+            console.log("STOCK SYMBOL IS INVALID");
             data = [];
             current_price = undefined;
             percent_change = undefined;
+            error_state = true;
             return;
         }
 
@@ -77,15 +79,15 @@
 
         if (tempStockData.length > 0) {
             //console.log("Successfully retrieved stock data:", stockData);
-            test = "Successfully retrieved stock data:"
+            console.log("Successfully retrieved stock data")
             //return tempStockData
         } else {
             console.log("No data found for the symbol.");
-            test = "No data found for the symbol."
+            error_state = true;
             return;
         }
 
-        current_price = tempStockData.slice(-1)[0]["price"];
+        current_price = parseFloat(tempStockData.slice(-1)[0]["price"]).toFixed(2);
         const past_price = tempStockData[0]["price"];
         percent_change = calculatePercentChange(current_price, past_price)
 
@@ -101,9 +103,9 @@
 
     function saveToChromeStorage() {
         // Increment the counter
-        counter++;
+        //counter++;
 
-        chrome.storage.local.set({ counter: counter });
+        //chrome.storage.local.set({ counter: counter });
         chrome.storage.local.set({ symbol: symbol });
     }
 
@@ -118,7 +120,7 @@
         <img class="icon" src="icons/clb.png" alt="Icon">
         <div>
             <h2 class="main-text">Janka Finance</h2>
-            <span class="sub-text">Jankalites LLC</span>
+            <a href="https://dailychart.freewebhostmost.com/" target="_blank" rel="noopener noreferrer" class="sub-text">© 2024 Jankalites</a>
         </div>
     </nav>
     <div class="chart-container m-4">
@@ -128,7 +130,6 @@
             <!-- Time Window Dropdown -->
             <Select bind:window={num_weeks} />
         </div>
-        <!-- <p>{test}</p> -->
         <div class="flex items-center py-4">
             <h2 class="scroll-m-20 text-2xl font-semibold tracking-tight pr-2">
                 ${current_price? current_price : "-"}
@@ -151,9 +152,21 @@
                       <Jellyfish size="60" color="#FFFFFF" unit="px" />
                     </div>
                 </div>
+                {:else if error_state}
+                <div class="absolute inset-0 flex items-center justify-center bg-background bg-opacity-50">
+                    <div class="flex flex-col items-center justify-center h-screen">
+                        <p class="leading-7 [&:not(:first-child)]:mt-6">Error fetching stock data for the last {num_weeks} weeks of {symbol}.</p>
+                    </div>
+                </div>
+                {:else if (num_weeks === undefined || symbol === "")}
+                <div class="absolute inset-0 flex items-center justify-center bg-background bg-opacity-50">
+                    <div class="flex flex-col items-center justify-center h-screen">
+                        <div class="text-lg font-semibold">Welcome to Janka Finance.</div>
+                        <p class="leading-7 [&:not(:first-child)]:mt-6">Select a symbol and time window to get started!</p>
+                    </div>
+                </div>
                 {/if}
             </Card.Content>
         </Card.Root>
-        
     </div>
 </div>

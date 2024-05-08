@@ -1,18 +1,21 @@
 {
     "manifest_version": 3,
     "name": "Janka Finance",
-    "version": "1.0.3",
-    "description": "Opens a new tab to a specific webpage once every 24 hours or when the extension icon is clicked",
+    "version": "2.0.0",
+    "description": "Daily stock price updates on a tab! The extension reminds you to check changes, helping determine if it's a good time to invest.",
     "permissions": ["alarms", "storage"],
     "action": {
         "default_title": "Janka Finance",
         "default_popup": "index.html"
     },
+    "background": {
+        "service_worker": "background.js"
+      },
     "icons": {
-        "16": "icons/money-bag16.png",
-        "32": "icons/money-bag32.png",
-        "48": "icons/money-bag48.png",
-        "128": "icons/money-bag128.png"
+        "16": "icons/ext-icon16.png",
+        "32": "icons/ext-icon32.png",
+        "48": "icons/ext-icon48.png",
+        "128": "icons/ext-icon128.png"
     }
 }
   
