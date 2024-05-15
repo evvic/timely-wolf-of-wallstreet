@@ -1,9 +1,15 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import * as Card from "$lib/components/ui/card";
+  import { ModeWatcher } from "mode-watcher";
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
+  import { Button } from "$lib/components/ui/button/index.js";
 
   // import "../app.css";
   import Ferdous from "./components/Ferdous.svelte";
-  import clb from "./assets/images/clb.png"
+  import clb from "./assets/images/clb.png";
+
+  let position = "top";
 
   let timeseries = "WEEKLY";
   let graphDataLength = 12;
@@ -129,41 +135,6 @@
       type: "BUY",
       amount: 10000,
       politicianName: "Nancy Pelosi",
-    },
-    {
-      symbol: "TSLA",
-      tradeDate: "2024-02-12",
-      type: "SELL",
-      amount: 50000,
-      politicianName: "Kevin Hern",
-    },
-    {
-      symbol: "NVDA",
-      tradeDate: "2024-02-01",
-      type: "SELL",
-      amount: 25000,
-      politicianName: "Max Miller",
-    },
-    {
-      symbol: "MSFT",
-      tradeDate: "2024-02-17",
-      type: "BUY",
-      amount: 10000,
-      politicianName: "Nancy Pelosi",
-    },
-    {
-      symbol: "TSLA",
-      tradeDate: "2024-02-12",
-      type: "SELL",
-      amount: 50000,
-      politicianName: "Kevin Hern",
-    },
-    {
-      symbol: "NVDA",
-      tradeDate: "2024-02-01",
-      type: "SELL",
-      amount: 25000,
-      politicianName: "Max Miller",
     },
   ];
 
@@ -304,7 +275,9 @@
   };
 </script>
 
-<main class="main h-dvh w-screen bg-neutral-900 overflow-y-scroll">
+<ModeWatcher />
+
+<main class="main h-dvh w-screen bg-neutral-900 overflow-y-scroll dark">
   {#key graphDataLength}
     {#await fetchData()}
       <div class="animate-pulse flex flex-col items-center text-white mt-20">
@@ -314,7 +287,7 @@
     {:then chart}
       <div class="flex-col text-center mb-2">
         <h1
-          class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
+          class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-white md:text-5xl lg:text-6xl dark:text-white"
         >
           Welcome Back for your Weekly Update!
         </h1>
@@ -325,20 +298,38 @@
               {#each mockPoliticianData as item}
                 <li class="text-white font-bold">
                   {#if item.type == "BUY"}
-                    <p class="text-emerald-700 text-lg">
-                      {item.type}
-                      {item.symbol}
-                    </p>
-                  {:else}
-                    <p class="text-red-700 text-lg">
-                      {item.type}
-                      {item.symbol}
-                    </p>
-                  {/if}
+                    <Card.Root class="w-[180px]">
+                      <Card.Header>
+                        <Card.Title class="text-green-700"
+                          >{item.type}
+                        </Card.Title>
+                        <Card.Description>{item.symbol}</Card.Description>
 
-                  <p>$ {item.amount}</p>
-                  <p>{item.politicianName}</p>
-                  {item.tradeDate}
+                      </Card.Header>
+                      <Card.Content>
+                        <p>$ {item.amount}</p>
+                        <p>{item.politicianName}</p>
+                        <p>{item.tradeDate}</p>
+
+                      </Card.Content>
+                      
+                    </Card.Root>
+                  {:else}
+                    <Card.Root class="w-[180px]">
+                      <Card.Header>
+                        <Card.Title class="text-red-700">{item.type}</Card.Title>
+                        <Card.Description>{item.symbol}</Card.Description>
+
+                      </Card.Header>
+                      <Card.Content>
+                        <p>$ {item.amount}</p>
+                        <p>{item.politicianName}</p>
+                        <p>{item.tradeDate}</p>
+
+                      </Card.Content>
+                      
+                    </Card.Root>
+                  {/if}
                 </li>
               {/each}
             </ul>
@@ -364,52 +355,37 @@
               </p>
             </div>
           </div>
-          <div
-            class="flex flex-col items-center"
-            on:focusout={handleDropdownFocusLoss}
-          >
-            <button class="btn m-1" on:click={handleDropdownClick}>
-              {#if isDropdownOpen}
-                <div
-                  class=" w-28 bg-slate-500 rounded-xl p-2 font-bold text-white"
+          <div class="w-max">
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger asChild let:builder>
+                <Button variant="outline" builders={[builder]}
+                  >{lengthMap.get(graphDataLength)}</Button
                 >
-                  <p>{lengthMap.get(graphDataLength)}🔼</p>
-                </div>
-              {:else}
-                <div
-                  class=" w-28 bg-slate-500 rounded-xl p-2 font-bold text-white"
-                >
-                  <p>{lengthMap.get(graphDataLength)}🔽</p>
-                </div>
-              {/if}
-            </button>
-            <ul
-              class="bg-slate-500 rounded-box w-28 rounded-lg py-2 font-bold flex flex-col items-center"
-              style:visibility={isDropdownOpen ? "visible" : "hidden"}
-            >
-              <li class="hover:bg-slate-800 w-full text-center">
-                <button
-                  class=" text-white p-1 w-full"
-                  on:click={() => (graphDataLength = 12)}
-                  on:click={handleDropdownClick}>3 Months</button
-                >
-              </li>
-              <li class="hover:bg-slate-800 w-full">
-                <button
-                  class="btn text-white p-1 w-full"
-                  on:click={() => (graphDataLength = 26)}
-                  on:click={handleDropdownClick}>6 Months</button
-                >
-              </li>
-              <li class="hover:bg-slate-800 w-full">
-                <button
-                  class="btn text-white p-1 w-full"
-                  on:click={() => (graphDataLength = 52)}
-                  on:click={handleDropdownClick}>1 Year</button
-                >
-              </li>
-            </ul>
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Content class="w-56 text-center">
+                <DropdownMenu.Label class="">Time Series</DropdownMenu.Label>
+                <DropdownMenu.Separator />
+                <DropdownMenu.RadioGroup bind:value={position}>
+                  <DropdownMenu.RadioItem
+                    value="top"
+                    on:click={() => (graphDataLength = 12)}
+                    >3 Months</DropdownMenu.RadioItem
+                  >
+                  <DropdownMenu.RadioItem
+                    value="bottom"
+                    on:click={() => (graphDataLength = 26)}
+                    >6 Months</DropdownMenu.RadioItem
+                  >
+                  <DropdownMenu.RadioItem
+                    value="right"
+                    on:click={() => (graphDataLength = 52)}
+                    >1 Year</DropdownMenu.RadioItem
+                  >
+                </DropdownMenu.RadioGroup>
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
           </div>
+          
           <div class="max-w-md rounded-xl overflow-hidden shadow-lg bg-red-900">
             <div class="px-6 py-4">
               <div class="font-extrabold text-xl mb-2">
@@ -483,7 +459,7 @@
     padding-block: 1rem;
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 0.5rem;
   }
 
   .slider[data-animated="true"] {
@@ -568,8 +544,6 @@
 
   .tag-list li {
     padding: 1rem;
-    background: var(--clr-primary-400);
     border-radius: 0.5rem;
-    box-shadow: 0 0.5rem 1rem -0.25rem var(--clr-primary-900);
   }
 </style>
