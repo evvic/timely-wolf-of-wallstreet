@@ -304,30 +304,25 @@
                           >{item.type}
                         </Card.Title>
                         <Card.Description>{item.symbol}</Card.Description>
-
                       </Card.Header>
                       <Card.Content>
                         <p>$ {item.amount}</p>
                         <p>{item.politicianName}</p>
                         <p>{item.tradeDate}</p>
-
                       </Card.Content>
-                      
                     </Card.Root>
                   {:else}
                     <Card.Root class="w-[180px]">
                       <Card.Header>
-                        <Card.Title class="text-red-700">{item.type}</Card.Title>
+                        <Card.Title class="text-red-700">{item.type}</Card.Title
+                        >
                         <Card.Description>{item.symbol}</Card.Description>
-
                       </Card.Header>
                       <Card.Content>
                         <p>$ {item.amount}</p>
                         <p>{item.politicianName}</p>
                         <p>{item.tradeDate}</p>
-
                       </Card.Content>
-                      
                     </Card.Root>
                   {/if}
                 </li>
@@ -336,7 +331,7 @@
           </div>
         </div>
 
-        <div class="flex justify-center">
+        <div class="flex justify-evenly mb-5">
           <div
             class="max-w-md rounded-xl overflow-hidden shadow-lg bg-green-900"
           >
@@ -355,37 +350,7 @@
               </p>
             </div>
           </div>
-          <div class="w-max">
-            <DropdownMenu.Root>
-              <DropdownMenu.Trigger asChild let:builder>
-                <Button variant="outline" builders={[builder]}
-                  >{lengthMap.get(graphDataLength)}</Button
-                >
-              </DropdownMenu.Trigger>
-              <DropdownMenu.Content class="w-56 text-center">
-                <DropdownMenu.Label class="">Time Series</DropdownMenu.Label>
-                <DropdownMenu.Separator />
-                <DropdownMenu.RadioGroup bind:value={position}>
-                  <DropdownMenu.RadioItem
-                    value="top"
-                    on:click={() => (graphDataLength = 12)}
-                    >3 Months</DropdownMenu.RadioItem
-                  >
-                  <DropdownMenu.RadioItem
-                    value="bottom"
-                    on:click={() => (graphDataLength = 26)}
-                    >6 Months</DropdownMenu.RadioItem
-                  >
-                  <DropdownMenu.RadioItem
-                    value="right"
-                    on:click={() => (graphDataLength = 52)}
-                    >1 Year</DropdownMenu.RadioItem
-                  >
-                </DropdownMenu.RadioGroup>
-              </DropdownMenu.Content>
-            </DropdownMenu.Root>
-          </div>
-          
+
           <div class="max-w-md rounded-xl overflow-hidden shadow-lg bg-red-900">
             <div class="px-6 py-4">
               <div class="font-extrabold text-xl mb-2">
@@ -404,6 +369,39 @@
         </div>
       </div>
 
+      <div class="flex justify-evenly border-b-2 pb-2">
+        <h2 class="text-2xl">Stocks of Interest</h2>
+
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger asChild let:builder>
+              <Button variant="outline" builders={[builder]}
+                >{lengthMap.get(graphDataLength)} 👈</Button
+              >
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content class="w-56 text-center">
+              <DropdownMenu.Label class="">Time Series</DropdownMenu.Label>
+              <DropdownMenu.Separator />
+              <DropdownMenu.RadioGroup bind:value={position}>
+                <DropdownMenu.RadioItem
+                  value="top"
+                  on:click={() => (graphDataLength = 12)}
+                  >3 Months</DropdownMenu.RadioItem
+                >
+                <DropdownMenu.RadioItem
+                  value="bottom"
+                  on:click={() => (graphDataLength = 26)}
+                  >6 Months</DropdownMenu.RadioItem
+                >
+                <DropdownMenu.RadioItem
+                  value="right"
+                  on:click={() => (graphDataLength = 52)}
+                  >1 Year</DropdownMenu.RadioItem
+                >
+              </DropdownMenu.RadioGroup>
+            </DropdownMenu.Content>
+          </DropdownMenu.Root>
+      </div>
+
       <div>
         <!-- {#key graphDataLength}
       {#await fetchData()}
@@ -412,7 +410,7 @@
         </div>
       {:then chart} -->
         <div
-          class="sm:grid sm:grid-rows-2 sm:grid-flow-col sm:gap-x-28 sm:gap-y-10 justify-center mb-2"
+          class="sm:grid sm:grid-rows-2 sm:grid-flow-col sm:gap-x-28 sm:gap-y-10 justify-center mb-2 mt-2"
         >
           {#each graphSymbols as graph}
             <div class="bg-slate-900 p-2 rounded-lg w-min">
