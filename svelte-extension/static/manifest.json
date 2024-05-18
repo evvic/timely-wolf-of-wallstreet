@@ -1,0 +1,21 @@
+{
+    "manifest_version": 3,
+    "name": "Janka Finance",
+    "version": "2.0.0",
+    "description": "Daily stock price updates on a tab! The extension reminds you to check changes, helping determine if it's a good time to invest.",
+    "permissions": ["alarms", "storage"],
+    "action": {
+        "default_title": "Janka Finance",
+        "default_popup": "index.html"
+    },
+    "background": {
+        "service_worker": "background.js"
+      },
+    "icons": {
+        "16": "icons/ext-icon16.png",
+        "32": "icons/ext-icon32.png",
+        "48": "icons/ext-icon48.png",
+        "128": "icons/ext-icon128.png"
+    }
+}
+  
